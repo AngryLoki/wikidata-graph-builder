@@ -34,3 +34,6 @@ node_modules
 
 # Browser libraries
 bower_components
+
+# gulp-gh-pages generated files
+.publish

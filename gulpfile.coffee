@@ -9,10 +9,12 @@ coffee = require('gulp-coffee')
 concat = require('gulp-concat')
 livereload = require('gulp-livereload')
 express = require('express')
-app = express()
 path = require('path')
 es = require('event-stream')
 flatten = require('gulp-flatten')
+ghPages = require('gulp-gh-pages')
+
+app = express()
 
 # Build tasks
 gulp.task 'bower-css', ->
@@ -78,6 +80,9 @@ gulp.task 'watch', ->
   gulp.watch 'src/assets/scripts/*.coffee', [ 'js' ]
   gulp.watch 'src/*.jade', [ 'templates' ]
   return
+
+gulp.task 'deploy', -> gulp.src('./dist/**/*').pipe(ghPages())
+
 
 # User tasks
 gulp.task 'build', ['bower-all', 'js', 'css', 'templates']

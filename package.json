@@ -12,6 +12,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-csso": "^1.0.1",
     "gulp-flatten": "^0.2.0",
+    "gulp-gh-pages": "^0.5.4",
     "gulp-jade": "^1.1.0",
     "gulp-livereload": "^3.8.1",
     "gulp-stylus": "^2.2.0",
