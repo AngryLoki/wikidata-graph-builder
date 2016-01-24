@@ -250,10 +250,7 @@ insertData = (data) ->
 
   circle = svg.append('g').selectAll('circle').data(force.nodes()).enter()
               .append('circle').attr(r: 6)
-              .classed('active', (o) ->
-                console.log o, o.url.endsWith(activeItem)
-                o.url.endsWith(activeItem)
-              ).call(force.drag)
+              .classed('active', (o) -> o.url.endsWith(activeItem)).call(force.drag)
 
   text = svg.append('g').selectAll('text').data(force.nodes()).enter()
             .append('text').attr(x: 8, y: '.31em')
@@ -311,5 +308,6 @@ openWdTree = ->
   data = History.getState().data
   url = "https://tools.wmflabs.org/wikidata-todo/tree.html?q=#{data.item.slice(1)}"
   url += "&#{if data.direction is 'Reverse' then 'rp' else 'p'}=#{data.property.slice(1)}"
+  url += "&depth=#{data.iterations}" if data.iterations isnt 0
   url += "&lang=#{data.lang}" if data.lang isnt 'en'
   window.open url
