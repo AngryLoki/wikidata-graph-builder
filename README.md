@@ -1,4 +1,4 @@
-# [Wikidata Tree Builder](https://angryloki.github.io/wikidata-tree-builder/)
+# [Wikidata Graph Builder](https://angryloki.github.io/wikidata-graph-builder/)
 Visualize [Wikidata](https://www.wikidata.org) items using [d3.js](http://d3js.org/). 
 
 Main features:
