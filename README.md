@@ -1,5 +1,5 @@
-# Wikidata Tree Builder
-Visualize [Wikidata](https://www.wikidata.org) items using [d3.js](http://d3js.org/).
+# [Wikidata Tree Builder](https://angryloki.github.io/wikidata-tree-builder/)
+Visualize [Wikidata](https://www.wikidata.org) items using [d3.js](http://d3js.org/). 
 
 ## Installation
 Installation steps are similar to other node.js applications.
