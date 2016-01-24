@@ -1,21 +1,21 @@
 doctype html
 html
   head
-    link(rel="stylesheet" href="/assets/css/bootstrap.min.css")
-    link(rel="stylesheet" href="/assets/css/bootstrap-theme.min.css")
-    link(rel="stylesheet" href="/assets/css/select2.min.css")
-    link(rel="stylesheet" href="/assets/css/toastr.min.css")
-    link(rel="stylesheet" href="/assets/css/select2-bootstrap.min.css")
-    link(rel="stylesheet" href="/assets/css/main.css")
+    link(rel="stylesheet" href="assets/css/bootstrap.min.css")
+    link(rel="stylesheet" href="assets/css/bootstrap-theme.min.css")
+    link(rel="stylesheet" href="assets/css/select2.min.css")
+    link(rel="stylesheet" href="assets/css/toastr.min.css")
+    link(rel="stylesheet" href="assets/css/select2-bootstrap.min.css")
+    link(rel="stylesheet" href="assets/css/main.css")
 
-    script(src="/assets/js/jquery.min.js")
-    script(src="/assets/js/bootstrap.min.js")
-    script(src="/assets/js/jquery.validate.min.js")
-    script(src="/assets/js/jquery.history.js")
-    script(src="/assets/js/d3.min.js")
-    script(src="/assets/js/select2.min.js")
-    script(src="/assets/js/toastr.min.js")
-    script(src="/assets/js/all.min.js")
+    script(src="assets/js/jquery.min.js")
+    script(src="assets/js/bootstrap.min.js")
+    script(src="assets/js/jquery.validate.min.js")
+    script(src="assets/js/jquery.history.js")
+    script(src="assets/js/d3.min.js")
+    script(src="assets/js/select2.min.js")
+    script(src="assets/js/toastr.min.js")
+    script(src="assets/js/all.min.js")
 
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width")
@@ -46,31 +46,29 @@ html
           //- button.btn.btn-default(id="openSvg") SVG
           button.btn.btn-default(id="openWdTree") List
     .container(id="main")
-      .jumbotron
-        h1 Wikidata Graph Builder
-        
-        noscript
-          .alert.alert-danger Wikidata Graph Builder requires JavaScript to be enabled
+      h1 Wikidata Graph Builder
+      
+      noscript
+        .alert.alert-danger Wikidata Graph Builder requires JavaScript to be enabled
 
-        p This tool builds graphs using 
-          a(href="https://www.wikidata.org") Wikidata
-          |  
-          a(href="https://query.wikidata.org/") Query Service
-          | &nbsp;and&nbsp;
-          a(href="https://d3js.org/") d3.js
-          | . 
-          p Example graphs:
-        
-        -
-          links = [
-            ['Parent taxons of Blue Whale', '?property=P171&item=Q42196'],
-            ['Class tree for human', '?property=P279&item=Q5'],
-            ['Parents of Nikita Mikhalkov', '?property=P40&item=Q55207&direction=reverse'],
-            ['Children of Agnes of the Palatinate (4 generations)', '?property=P40&item=Q4450926&iterations=4']
-          ]
-        
-        ul
-          each link in links
-            li!= '<a href="' + link[1] + '">' + link[0] + '</a>'
+      p 
+        | Build graphs using #[a(href="https://www.wikidata.org") Wikidata] #[a(href="https://query.wikidata.org/") Query Service] and
+        |  
+        | #[a(href="https://d3js.org/") d3.js]. 
+      p Example graphs:
+      
+      -
+        links = [
+          ['Parent taxons of Blue Whale', '?property=P171&item=Q42196'],
+          ['Class tree for human', '?property=P279&item=Q5'],
+          ['Parents of Nikita Mikhalkov', '?property=P40&item=Q55207&direction=reverse'],
+          ['Children of Agnes of the Palatinate (4 generations)', '?property=P40&item=Q4450926&iterations=4']
+        ]
+      
+      ul
+        each link in links
+          li!= '<a href="' + link[1] + '">' + link[0] + '</a>'
+          
+      p.text-muted The source code released under #[a(href="http://opensource.org/licenses/MIT") MIT license] at #[a(href="https://github.com/AngryLoki/wikidata-tree-builder") GitHub].
 
     svg(xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink")
