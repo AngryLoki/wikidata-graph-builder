@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/assets/css/select2.min.css">
+    <link rel="stylesheet" href="/assets/css/toastr.min.css">
+    <link rel="stylesheet" href="/assets/css/select2-bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery.validate.min.js"></script>
+    <script src="/assets/js/jquery.history.js"></script>
+    <script src="/assets/js/d3.min.js"></script>
+    <script src="/assets/js/select2.min.js"></script>
+    <script src="/assets/js/toastr.min.js"></script>
+    <script src="/assets/js/all.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Wikidata Graph Builder</title>
+  </head>
+  <body>
+    <nav role="navigation" class="navbar navbar-default">
+      <div class="container"><a class="navbar-brand" href="?">WGB</a>
+        <form action="" class="navbar-form navbar-left">
+          <div class="form-group">
+            <input name="lang" type="text" placeholder="en" size="4" style="width: 45px" class="form-control">
+          </div>
+          <div class="form-group">
+            <select name="item" style="width: 210px" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <select name="property" style="width: 210px" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <select name="direction" style="width: 100px" class="form-control">
+              <option value="forward" selected>Forward</option>
+              <option value="reverse">Reverse</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="iterations">Iterations</label>
+            <input name="iterations" type="number" value="0" min="0" style="width: 50px" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="limit">Limit</label>
+            <input name="limit" type="number" value="0" min="0" size="2" style="width: 60px" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">Build</button>
+          <button id="openSparql" class="btn btn-default">Query</button>
+          <button id="openWdTree" class="btn btn-default">List</button>
+        </form>
+      </div>
+    </nav>
+    <div id="main" class="container">
+      <div class="jumbotron">
+        <h1>Wikidata Graph Builder</h1>
+        <noscript>
+          <div class="alert alert-danger">Wikidata Graph Builder requires JavaScript to be enabled</div>
+        </noscript>
+        <p>This tool builds graphs using <a href="https://www.wikidata.org">Wikidata</a> <a href="https://query.wikidata.org/">Query Service</a>&nbsp;and&nbsp;<a href="https://d3js.org/">d3.js</a>. 
+          <p>Example graphs:</p>
+        </p>
+        <ul>
+          <li><a href="?property=P171&item=Q42196">Parent taxons of Blue Whale</a></li>
+          <li><a href="?property=P279&item=Q5">Class tree for human</a></li>
+          <li><a href="?property=P40&item=Q55207&direction=reverse">Parents of Nikita Mikhalkov</a></li>
+          <li><a href="?property=P40&item=Q4450926&iterations=4">Children of Agnes of the Palatinate (4 generations)</a></li>
+        </ul>
+      </div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink"></svg>
+  </body>
+</html>
