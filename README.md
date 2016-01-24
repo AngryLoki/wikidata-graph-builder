@@ -1,6 +1,13 @@
 # [Wikidata Tree Builder](https://angryloki.github.io/wikidata-tree-builder/)
 Visualize [Wikidata](https://www.wikidata.org) items using [d3.js](http://d3js.org/). 
 
+Main features:
+* Forward and backward tree traversal using [RDF GAS API](https://wiki.blazegraph.com/wiki/index.php/RDF_GAS_API)
+* Item and property autocompletion using [Select2](https://select2.github.io/)
+* Support for various languages for item labels
+* Limits for number of iterations and number of items in tree
+* SPARQL query generation for [Wikidata Query Service](https://query.wikidata.org/) and links to [Wikidata generic tree](https://tools.wmflabs.org/wikidata-todo/tree.html)
+
 ## Installation
 Installation steps are similar to other node.js applications.
 ```
