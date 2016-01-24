@@ -216,29 +216,6 @@ insertData = (data) ->
   svg = d3.select('svg')
   svg.selectAll('*').remove()
 
-  svg.append('style').text("""
-  .link {
-    stroke: #000;
-    stroke-width: 1.5px;
-  }
-
-  circle {
-    fill: #ccc;
-    stroke: #333;
-    stroke-width: 1.5px;
-  }
-
-  text {
-    font: 10px sans-serif;
-    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-    cursor: pointer;
-  }
-
-  .active {
-    fill: #6BB9F0;
-  }
-  """)
-
   svg.append('defs').selectAll('marker').data(['direction']).enter()
      .append('marker').attr(
       id: ((d) -> d), viewBox: '0 -5 10 10', refX: 15,

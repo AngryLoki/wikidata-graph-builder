@@ -23,7 +23,7 @@ html
   body
     nav.navbar.navbar-default(role="navigation")
       .container
-        <a class="navbar-brand" href="?">WGB</a>
+        a.navbar-brand(href="?") WGB
         form.navbar-form.navbar-left(action="")
           .form-group
             input.form-control(name="lang" type="text" placeholder="en" size="4" style="width: 45px")
@@ -63,12 +63,13 @@ html
           ['Class tree for human', '?property=P279&item=Q5'],
           ['Parents of Nikita Mikhalkov', '?property=P40&item=Q55207&direction=reverse'],
           ['Children of Agnes of the Palatinate (4 generations)', '?property=P40&item=Q4450926&iterations=4'],
-          ['Types of numbers', '?property=P279&item=Q11563&direction=reverse']
+          ['Types of numbers', '?property=P279&item=Q11563&direction=reverse'],
+          ['Subclasses of physicists', '?property=P279&item=Q169470&lang=en&direction=reverse']
         ]
       
       ul
         each link in links
-          li!= '<a href="' + link[1] + '">' + link[0] + '</a>'
+          li #[a(href=link[1])=link[0]]
           
       p.text-muted The source code released under #[a(href="http://opensource.org/licenses/MIT") MIT license] at #[a(href="https://github.com/AngryLoki/wikidata-tree-builder") GitHub].
 
