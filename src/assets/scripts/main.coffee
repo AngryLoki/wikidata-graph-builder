@@ -193,11 +193,14 @@ insertData = (data) ->
   nodes[el.item.value] = name: el.itemLabel.value, url: el.item.value for el in bindings
   links = (source: nodes[el.item.value], target: nodes[el.parent.value] for el in bindings when nodes[el.parent?.value])
 
-  link = (d) -> "M#{d.source.x},#{d.source.y}A0,0 0 0,1 #{d.target.x},#{d.target.y}"
   transform = (d) -> "translate(#{d.x},#{d.y})"
 
   tick = ->
-    path.attr d: link
+    line.attr
+      x1: (d) -> d.source.x
+      y1: (d) -> d.source.y
+      x2: (d) -> d.target.x
+      y2: (d) -> d.target.y
     circle.attr transform: transform
     text.attr transform: transform
     return
@@ -229,7 +232,7 @@ insertData = (data) ->
   svg.append('defs').selectAll('marker').data(['direction']).enter()
      .append('marker').attr(
       id: ((d) -> d), viewBox: '0 -5 10 10', refX: 15,
-      refY: -1.5, markerWidth: 6, markerHeight: 6, orient: 'auto')
+      markerWidth: 6, markerHeight: 6, orient: 'auto')
      .append('path').attr(d: 'M0,-5L10,0L0,5')
 
   svg_group = svg.append("g").attr("transform", "translate(0,0)").call(zoom)
@@ -239,8 +242,8 @@ insertData = (data) ->
 
   container = svg_group.append("g")
 
-  path = container.append('g').selectAll('path').data(force.links()).enter()
-            .append('path').attr('class': 'link', 'marker-end': 'url(#direction)')
+  line = container.append('g').selectAll('line').data(force.links()).enter()
+            .append('line').attr('marker-end': 'url(#direction)')
 
   circle = container.append('g').selectAll('circle').data(force.nodes()).enter()
               .append('circle').attr(r: 6)
