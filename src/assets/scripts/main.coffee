@@ -202,18 +202,28 @@ insertData = (data) ->
     text.attr transform: transform
     return
 
-
   resize = ->
     width = window.innerWidth
     height = window.innerHeight - $('nav').outerHeight() - 10
     svg.attr width: width, height: height
+    drag_rect.attr width: width, height: height
     force.size([width, height]).resume()
     return
 
-  force = d3.layout.force().nodes(d3.values nodes).links(links)
-            .linkDistance(30).charge(-200).gravity(.05).on('tick', tick).start()
+  zoomed = ->
+    container.attr 'transform', "translate(#{d3.event.translate})scale(#{d3.event.scale})"
+    return
 
-  svg = d3.select('svg')
+  zoom = d3.behavior.zoom().on('zoom', zoomed)
+
+  force = d3.layout.force()
+
+  drag = force.drag().on "dragstart", -> d3.event.sourceEvent.stopPropagation(); return
+
+  force.nodes(d3.values nodes).links(links)
+       .linkDistance(30).charge(-200).gravity(.05).on('tick', tick).start()
+
+  svg = d3.select('svg').attr("pointer-events", "all")
   svg.selectAll('*').remove()
 
   svg.append('defs').selectAll('marker').data(['direction']).enter()
@@ -222,14 +232,23 @@ insertData = (data) ->
       refY: -1.5, markerWidth: 6, markerHeight: 6, orient: 'auto')
      .append('path').attr(d: 'M0,-5L10,0L0,5')
 
-  path = svg.append('g').selectAll('path').data(force.links()).enter()
+  svg_group = svg.append("g").attr("transform", "translate(0,0)").call(zoom)
+
+  drag_rect = svg_group.append("rect")
+            .style("fill", "none")
+
+  container = svg_group.append("g")
+
+  path = container.append('g').selectAll('path').data(force.links()).enter()
             .append('path').attr('class': 'link', 'marker-end': 'url(#direction)')
 
-  circle = svg.append('g').selectAll('circle').data(force.nodes()).enter()
+  circle = container.append('g').selectAll('circle').data(force.nodes()).enter()
               .append('circle').attr(r: 6)
-              .classed('active', (o) -> o.url.endsWith(activeItem)).call(force.drag)
+              .attr("cx", (d) -> d.x )
+              .attr("cy", (d) -> d.y )
+              .classed('active', (o) -> o.url.endsWith(activeItem)).call(drag)
 
-  text = svg.append('g').selectAll('text').data(force.nodes()).enter()
+  text = container.append('g').selectAll('text').data(force.nodes()).enter()
             .append('text').attr(x: 8, y: '.31em')
             .text((d) -> d.name).on('click', (o) -> window.open o.url; return)
 
