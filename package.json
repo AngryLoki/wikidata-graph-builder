@@ -1,7 +1,7 @@
 {
-  "name": "wikidata-tree-builder",
+  "name": "wikidata-graph-builder",
   "version": "0.0.1",
-  "description": "Visualize Wikidata trees using d3.js",
+  "description": "Visualize Wikidata item graphs using d3.js",
   "author": "AngryLoki",
   "devDependencies": {
     "coffee-script": "^1.10.0",
