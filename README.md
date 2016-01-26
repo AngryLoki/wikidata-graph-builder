@@ -1,6 +1,7 @@
 # [Wikidata Graph Builder](https://angryloki.github.io/wikidata-graph-builder/)
 Visualize [Wikidata](https://www.wikidata.org) items using [d3.js](http://d3js.org/).
 
+[![Build Status](https://travis-ci.org/AngryLoki/wikidata-graph-builder.svg?branch=master)](https://travis-ci.org/AngryLoki/wikidata-graph-builder)
 [![Dependency Status](https://david-dm.org/AngryLoki/wikidata-graph-builder.svg)](https://david-dm.org/AngryLoki/wikidata-graph-builder)
 [![devDependency Status](https://david-dm.org/AngryLoki/wikidata-graph-builder/dev-status.svg)](https://david-dm.org/AngryLoki/wikidata-graph-builder#info=devDependencies)
 
