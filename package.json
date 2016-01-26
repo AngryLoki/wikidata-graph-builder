@@ -3,6 +3,20 @@
   "version": "0.0.1",
   "description": "Visualize Wikidata item graphs using d3.js",
   "author": "AngryLoki",
+  "keywords": "wikidata, d3",
+  "homepage": "https://angryloki.github.io/wikidata-graph-builder/",
+  "bugs": "https://github.com/AngryLoki/wikidata-graph-builder/issues",
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/AngryLoki/wikidata-graph-builder/blob/master/LICENSE"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AngryLoki/wikidata-graph-builder.git"
+  },
   "devDependencies": {
     "coffee-script": "^1.10.0",
     "event-stream": "^3.3.2",
