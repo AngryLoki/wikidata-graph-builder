@@ -13,8 +13,14 @@ before_script:
 
 script:
   - gulp build
+  - gulp deploy
 
 cache:
   directories:
     - node_modules
     - bower_components
+
+env:
+  global:
+  - GH_REF: github.com/AngryLoki/wikidata-graph-builder.git
+  - secure: e538eq8QGput7KsGSBVAA3+pD//7rZUiNkTMCj1CORXQMAzqpQekETH/B0xu5Ipn2VKgFP4sBQ7Lw48J0Oa0mwtpa5i5WxIzQJDbsvJD91BO785nWUzU0et1OgoldWOitupicQlGnp5GHN5kehp/zAG2gg1iNJKpaCcPNf0oIbTA6H/26sdoZerCNZQDT7uMEtP0opQyrM8mqQ3KLiORA2A9+weKudMzIQZUUuIzereTsn7OAKwfO4d0oeOvskObAJszXu2rjvsz85lCXzMxd8+ZyFfWs84BZ1dGnKQB7mVbjd8Z6xzfZPgZ1mi9804NhikAv8zhbm8gqxa9VPQ9BGfJ/e7r0u4pNwPrOcZcbtuEdo7TxYIq76ICuTf05oAj/clLrc8OSvpeZQASXkyKZP3MrOg25vlJEZZnSuY8AOMVrkI8odc3kwTiBrXOfVRuEVqq9iwZYskHY4Zf/hzSxIrMFNj5YqTTSo0f6ImA/jafU5OwnCo+DSWo5I2batsCi4+ToxUACKSbBc3zGsXFLTTZnQNEaYOfJ4fScvciPH5hbLYCAppmUgQzcqNHetZWnD0ZSoLBVuMvSyM0Ohztj459cCkHDjtIZbCwmcATaE0ImSMgeYn+hsa+GJdU5eVWLEniB9AhYYx0jH96PkhsYHn4BYcwkpUdMEP8oG+P0X8=

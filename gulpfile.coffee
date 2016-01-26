@@ -81,7 +81,12 @@ gulp.task 'watch', ->
   gulp.watch 'src/*.jade', [ 'templates' ]
   return
 
-gulp.task 'deploy', -> gulp.src('./dist/**/*').pipe(ghPages())
+gulp.task 'deploy', ->
+  ghToken = process.env.GH_TOKEN
+  ghRef = process.env.GH_REF
+  conf = remoteUrl: "https://#{ghToken}@#{ghRef}" if ghToken and ghRef
+  gulp.src('./dist/**/*')
+  .pipe(ghPages(conf))
 
 
 # User tasks
