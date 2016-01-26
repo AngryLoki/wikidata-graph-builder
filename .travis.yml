@@ -1,3 +1,4 @@
+sudo: false
 language: node_js
 node_js:
   - '4.2.6'
@@ -12,3 +13,8 @@ before_script:
 
 script:
   - gulp build
+
+cache:
+  directories:
+    - node_modules
+    - bower_components
