@@ -115,6 +115,9 @@ defaults =
   iterations: 0
   limit: 0
 
+urlDirections = ['forward', 'reverse', 'both']
+capitalize = (string) -> string.charAt(0).toUpperCase() + string.slice(1)
+
 submitHandler = (event) ->
   return if not $('form').valid()
   $property = $(this).find('[name=property] :selected')
@@ -129,7 +132,7 @@ submitHandler = (event) ->
     property: $property.val()
     item: $item.val()
     lang: $lang.val()
-    direction: if $direction.val() == 'reverse' then 'Reverse' else 'Forward'
+    direction: capitalize $direction.val()
     iterations: parseInt $iterations.val()
     limit: parseInt $limit.val()
 
@@ -139,6 +142,8 @@ submitHandler = (event) ->
 
   History.pushState data, '', '?' + $.param(urldata)
   false
+
+
 
 getUrlParams = ->
   pl = /\+/g
@@ -154,36 +159,51 @@ getUrlParams = ->
   item: urlParams.item or defaults.item
   property: urlParams.property or defaults.property
   lang: urlParams.lang or defaults.lang
-  direction: if urlParams.direction is 'reverse' then 'Reverse' else 'Forward'
+  direction: if urlParams.direction in urlDirections then capitalize(urlParams.direction) else defaults.direction
   iterations: parseInt(urlParams.iterations) or defaults.iterations
   limit: parseInt(urlParams.limit) or defaults.limit
 
-
-genSparql = (data) ->
+genSparqlHeader = ->
   """
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX gas: <http://www.bigdata.com/rdf/gas#>
-
-SELECT ?item ?itemLabel ?parent {
-  { SERVICE gas:service {
-     gas:program gas:gasClass "com.bigdata.rdf.graph.analytics.SSSP" ;
-                 gas:in wd:#{data.item} ;
-                 gas:traversalDirection "#{data.direction}" ;
-                 gas:out ?item ;
-                 gas:out1 ?depth ;#{if data.iterations is 0 then "" else
-                   "\n                 gas:maxIterations #{data.iterations} ;"
-                 }#{if data.limit is 0 then "" else
-                   "\n                 gas:maxVisited #{data.limit} ;"
-                 }
-                 gas:linkType wdt:#{data.property} .
-    }
-  } .
-  OPTIONAL { ?item wdt:#{data.property} ?parent }
-  SERVICE wikibase:label {bd:serviceParam wikibase:language "#{data.lang}" }
-}
 """
+
+genSparqlBody = (data, direction = data.direction) ->
+  """
+  SELECT ?item ?itemLabel ?parent {
+    { SERVICE gas:service {
+       gas:program gas:gasClass "com.bigdata.rdf.graph.analytics.SSSP" ;
+                   gas:in wd:#{data.item} ;
+                   gas:traversalDirection "#{direction}" ;
+                   gas:out ?item ;
+                   gas:out1 ?depth ;#{if data.iterations is 0 then "" else
+                     "\n                 gas:maxIterations #{data.iterations} ;"
+                   }#{if data.limit is 0 then "" else
+                     "\n                 gas:maxVisited #{data.limit} ;"
+                   }
+                   gas:linkType wdt:#{data.property} .
+      }
+    } .
+    OPTIONAL { ?item wdt:#{data.property} ?parent }
+    SERVICE wikibase:label {bd:serviceParam wikibase:language "#{data.lang}" }
+  }
+  """
+
+genSparql = (data) ->
+  if data.direction isnt "Both"
+    genSparqlHeader() + "\n\n" + genSparqlBody(data)
+  else
+     """
+     #{genSparqlHeader()}
+     SELECT * { {
+     #{genSparqlBody(data, "Forward")}
+     } UNION {
+     #{genSparqlBody(data, "Reverse")}
+     } }
+     """
 
 
 insertData = (data) ->
@@ -306,7 +326,8 @@ openWdTree = ->
   return if not $('form').valid()
   data = History.getState().data
   url = "https://tools.wmflabs.org/wikidata-todo/tree.html?q=#{data.item.slice(1)}"
-  url += "&#{if data.direction is 'Reverse' then 'rp' else 'p'}=#{data.property.slice(1)}"
+  url += "&rp=#{data.property.slice(1)}" if data.direction in ['Reverse', 'Both']
+  url += "&p=#{data.property.slice(1)}" if data.direction in ['Forward', 'Both']
   url += "&depth=#{data.iterations}" if data.iterations isnt 0
   url += "&lang=#{data.lang}" if data.lang isnt 'en'
   window.open url

@@ -35,6 +35,7 @@ html
             select.form-control(name="direction" style="width: 100px")
               option(value="forward" selected) Forward
               option(value="reverse") Reverse
+              option(value="both") Both
           .form-group
             label(for="iterations") Iterations
             input.form-control(name="iterations" type="number" value="0" min="0" style="width: 50px")
@@ -64,7 +65,8 @@ html
           ['Parents of Nikita Mikhalkov', '?property=P40&item=Q55207&direction=reverse'],
           ['Children of Agnes of the Palatinate (4 generations)', '?property=P40&item=Q4450926&iterations=4'],
           ['Types of numbers', '?property=P279&item=Q11563&direction=reverse'],
-          ['Subclasses of physicists', '?property=P279&item=Q169470&lang=en&direction=reverse']
+          ['Subclasses of physicists', '?property=P279&item=Q169470&lang=en&direction=reverse'],
+          ['Subclasses and parent classes of period 2 elements', '?property=P279&item=Q207712&direction=both']
         ]
       
       ul
