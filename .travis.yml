@@ -12,6 +12,8 @@ before_script:
   - bower install
 
 script:
+  git config user.name "Travis CI"
+  git config user.email "AngryLoki@users.noreply.github.com"
   - gulp build
   - gulp deploy
 
