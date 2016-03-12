@@ -6,12 +6,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "select2-bootstrap-theme": "~0.1.0-beta.4",
-    "toastr": "~2.1.2",
-    "bootstrap": "~3.3.6",
-    "select2": "~4.0.1",
-    "jquery-validate": "~1.14.0",
     "d3": "~3.5.13",
-    "history.js": "~1.8.0"
+    "angular-material": "~1.0.6"
   }
 }

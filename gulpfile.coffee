@@ -21,6 +21,8 @@ gulp.task 'bower-css', ->
   gulp.src([
     'bower_components/**/*.min.css'
     '!bower_components/**/docs/**/*.min.css'
+    '!bower_components/angular-material/modules/**/*.min.css'
+    '!bower_components/**/angular-material.layouts.min.css'
   ]).pipe(flatten())
     .pipe gulp.dest('dist/assets/css/')
 
@@ -31,6 +33,8 @@ gulp.task 'bower-js', ->
     '!bower_components/**/docs/**/*.min.js'
     '!bower_components/**/additional-methods.min.js'
     '!bower_components/**/select2.full.min.js'
+    '!bower_components/**/select2.full.min.js'
+    '!bower_components/angular-material/modules/**/*.min.js'
   ]).pipe(flatten())
     .pipe gulp.dest('dist/assets/js/')
 
