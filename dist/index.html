@@ -61,7 +61,7 @@
         </div>
       </md-toolbar>
       <md-progress-linear md-mode="query" ng-show="ctrl.isLoading"> </md-progress-linear>
-      <md-content ng-hide="ctrl.showSvg" md-scroll-y layout="column" flex layout-padding>
+      <md-content ng-hide="ctrl.showSvg &amp;&amp; ctrl.wdqs" md-scroll-y layout="column" flex layout-padding>
         <div class="main-content">
           <h1 class="md-display-2">Wikidata Graph Builder</h1>
           <noscript>Wikidata Graph Builder requires JavaScript to be enabled</noscript>
@@ -81,7 +81,7 @@
           <p class="footer">The source code released under <a href="http://opensource.org/licenses/MIT">MIT license</a> at <a href="https://github.com/AngryLoki/wikidata-tree-builder">GitHub</a>.</p>
         </div>
       </md-content>
-      <svg id="graph" ng-show="ctrl.showSvg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink"></svg>
+      <svg id="graph" ng-show="ctrl.showSvg &amp;&amp; ctrl.wdqs" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink"></svg>
     </div>
   </body>
 </html>

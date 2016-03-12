@@ -104,7 +104,7 @@ html
       md-progress-linear(md-mode="query" ng-show="ctrl.isLoading")
         | 
 
-      md-content(ng-hide="ctrl.showSvg" md-scroll-y layout="column" flex layout-padding)
+      md-content(ng-hide="ctrl.showSvg && ctrl.wdqs" md-scroll-y layout="column" flex layout-padding)
         div.main-content
           h1.md-display-2 Wikidata Graph Builder
 
@@ -136,4 +136,4 @@ html
               
           p.footer The source code released under #[a(href="http://opensource.org/licenses/MIT") MIT license] at #[a(href="https://github.com/AngryLoki/wikidata-tree-builder") GitHub].
 
-      svg(id="graph" ng-show="ctrl.showSvg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink")
+      svg(id="graph" ng-show="ctrl.showSvg && ctrl.wdqs" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink")

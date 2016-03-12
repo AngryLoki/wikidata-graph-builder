@@ -223,7 +223,6 @@ do ->
 
     @reset = ->
       $location.search({})
-      @showSvg = false
 
     @validate = ->
       return @mode is 'wdqs' and @wdqs or @mode isnt 'wdqs' and @property and @item and @property
