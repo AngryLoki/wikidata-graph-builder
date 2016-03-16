@@ -117,7 +117,7 @@ do ->
     SELECT ?item ?itemLabel ?linkTo {
       #{genSparqlClause(data)}
       OPTIONAL { ?item wdt:#{data.property} ?linkTo }
-      SERVICE wikibase:label {bd:serviceParam wikibase:language "en" }
+      SERVICE wikibase:label {bd:serviceParam wikibase:language "#{data.lang}" }
     }
     """
 
