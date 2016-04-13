@@ -122,7 +122,7 @@ do ->
     """
 
 
-  FormCtrl = ($timeout, $q, $log, $http, $httpParamSerializer, $scope, $location, $rootScope, $mdToast, $mdDialog) ->
+  FormCtrl = ($log, $scope, $location, $rootScope, $mdToast, $mdDialog, WikiToolsService) ->
     @modes = [
       {mode: 'forward', text: 'Forward'}
       {mode: 'reverse', text: 'Reverse'}
@@ -172,54 +172,23 @@ do ->
 
     $rootScope.$on '$locationChangeSuccess', rebuildFromUrlOrData
 
-    wdApiParams = $httpParamSerializer
-      format: 'json'
-      formatversion: 2
-      callback: 'JSON_CALLBACK'
-
-    wdApi = 'https://www.wikidata.org/w/api.php?' + wdApiParams
-
-    searchParams = (type, query, language = @lang) =>
-      action: 'wbsearchentities'
-      search: query
-      uselang: language,
-      language: language
-      type: type
-      continue: 0
-
-    refreshParams = (what, language = @lang) =>
-      action: 'wbsearchentities'
-      search: what
-      uselang: language
-      language: language
-      type: if what.startsWith('Q') then 'item' else 'property'
-      limit: 1
-
     itemRefresh = (name) =>
       (@item = `void 0`; @itemText = `void 0`; return) if not name
-      refreshSuccess = (response) => @item = response.data.search[0]
-      refreshError = (response)-> $log.error 'Request failed'; reject 'Request failed'
-      $http.jsonp(wdApi, params: refreshParams name).then(refreshSuccess, refreshError)
+      refreshSuccess = (result) => @item = result
+      WikiToolsService.getEntity(name, @lang).then(refreshSuccess)
       return
 
     propertyRefresh = (name) =>
       (@property = `void 0`; @propertyText = `void 0`; return) if not name
-      refreshSuccess = (response)=> @property = response.data.search[0]
-      refreshError = (response)-> $log.error 'Request failed'; reject 'Request failed'
-      $http.jsonp(wdApi, params: refreshParams name).then(refreshSuccess, refreshError)
+      refreshSuccess = (result) => @property = result
+      WikiToolsService.getEntity(name, @lang).then(refreshSuccess)
       return
 
     @itemSearch = (query) ->
-      $q (resolve, reject) ->
-        searchSuccess = (response)-> resolve response.data.search
-        searchError = (response)-> $log.error 'Request failed'; reject 'Request failed'
-        $http.jsonp(wdApi, params: searchParams 'item', query).then(searchSuccess, searchError)
+      WikiToolsService.searchEntities('item', query, @lang)
 
     @propertySearch = (query) ->
-      $q (resolve, reject) ->
-        searchSuccess = (response)-> resolve response.data.search
-        searchError = (response)-> $log.error 'Request failed'; reject 'Request failed'
-        $http.jsonp(wdApi, params: searchParams 'property', query).then(searchSuccess, searchError)
+      WikiToolsService.searchEntities('property', query, @lang)
 
     @reset = ->
       $location.search({})
@@ -263,11 +232,11 @@ do ->
       query = data.wdqs
       start_time = new Date().getTime()
 
-      insertSuccess = (response)=>
+      insertSuccess = (response) =>
         @isLoading = false
         insertData response.data, data.item, data.mode
 
-      insertError = (response)=>
+      insertError = (response) =>
         @isLoading = false
         $log.error 'unable to process answer', response.data
         request_time = new Date().getTime() - start_time
@@ -278,7 +247,7 @@ do ->
         return
 
       @isLoading = true
-      $http.get('https://query.wikidata.org/sparql', params: query: query).then(insertSuccess, insertError)
+      WikiToolsService.wdqs(query).then(insertSuccess, insertError)
 
       @showSvg = true
       return
@@ -305,15 +274,13 @@ do ->
       url += "&lang=#{data.lang}" if data.lang isnt 'en'
       window.open url
       return
-
-
     return
 
   FormCtrl.$inject = [
-    '$timeout', '$q', '$log', '$http', '$httpParamSerializer',
-    '$scope', '$location', '$rootScope', '$mdToast', '$mdDialog']
+    '$log', '$scope', '$location', '$rootScope', '$mdToast', '$mdDialog', 'WikiToolsService'
+  ]
 
-  app = angular.module('WgbApp', ['ngMaterial'])
+  app = angular.module('WgbApp', ['ngMaterial', 'WikiTools'])
 
   app.config ['$locationProvider', ($locationProvider) ->
     $locationProvider.html5Mode
