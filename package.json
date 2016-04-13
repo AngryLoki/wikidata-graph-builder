@@ -24,7 +24,7 @@
     "gulp": "^3.9.1",
     "gulp-coffee": "^2.3.1",
     "gulp-concat": "^2.6.0",
-    "gulp-csso": "^1.1.0",
+    "gulp-csso": "^2.0.0",
     "gulp-flatten": "^0.2.0",
     "gulp-gh-pages": "^0.5.4",
     "gulp-jade": "^1.1.0",
