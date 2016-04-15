@@ -81,7 +81,7 @@
           <p class="footer">The source code released under <a href="http://opensource.org/licenses/MIT">MIT license</a> at <a href="https://github.com/AngryLoki/wikidata-tree-builder">GitHub</a>.</p>
         </div>
       </md-content>
-      <svg id="graph" ng-show="ctrl.showSvg &amp;&amp; ctrl.wdqs" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink"></svg>
+      <graph graph-data="ctrl.graphData" active-item="ctrl.activeItem" mode="ctrl.mode"></graph>
     </div>
   </body>
 </html>

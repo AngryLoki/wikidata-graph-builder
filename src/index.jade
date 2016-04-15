@@ -136,4 +136,5 @@ html
               
           p.footer The source code released under #[a(href="http://opensource.org/licenses/MIT") MIT license] at #[a(href="https://github.com/AngryLoki/wikidata-tree-builder") GitHub].
 
-      svg(id="graph" ng-show="ctrl.showSvg && ctrl.wdqs" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink")
+      //- svg(id="graph" ng-show="ctrl.showSvg && ctrl.wdqs" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink")
+      graph(graph-data="ctrl.graphData" active-item="ctrl.activeItem" mode="ctrl.mode")
