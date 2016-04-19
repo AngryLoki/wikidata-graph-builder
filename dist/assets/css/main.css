@@ -1,1 +1,127 @@
-graph{overflow:hidden}.site-content-toolbar{background:#f6f6f6!important;color:rgba(0,0,0,.87)!important}a{color:#106cc8;text-decoration:none;font-weight:400;border-bottom:1px solid rgba(64,84,178,.25);-webkit-transition:border-bottom .35s;-moz-transition:border-bottom .35s;-ms-transition:border-bottom .35s;-o-transition:border-bottom .35s;transition:border-bottom .35s}a:focus,a:hover{border-bottom:1px solid #4054b2}ul{margin:0;padding:0}ul li{margin-left:16px;padding:0;margin-top:3px;list-style-position:inside}ul li:first-child{margin-top:0}textarea{margin-top:12px;margin-bottom:12px;width:500px;transition:all .2s ease;height:46px;font-family:Menlo,Monaco,Consolas,"Courier New",monospace;font-size:15px;padding:3px}textarea:focus{height:200px}.md-toolbar-tools{height:initial;max-height:initial;font-size:16px}.autocomplete-header-template li{border-bottom:1px solid #ddd;height:auto;padding:4px 8px;white-space:normal}.autocomplete-header-template li:last-child{border-bottom-width:0}.autocomplete-header-template .item-description,.autocomplete-header-template .item-label{display:block;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.autocomplete-header-template .item-description{font-size:smaller}md-toolbar md-autocomplete input{padding:0 0 0 8px!important}.md-toolbar-tools>*{margin-left:6px;margin-right:6px}.md-toolbar-tools label{font-size:14px}.md-toolbar-tools .md-errors-spacer{display:none}.main-content{width:auto;max-width:680px;margin-left:auto;margin-right:auto}md-progress-linear{position:absolute;transition:opacity .1s linear}md-progress-linear .md-container{height:2px}.footer{font-size:small}circle,line{stroke:#000;stroke-width:1.5px}circle{fill:#ccc;stroke:#333}text{font:10px sans-serif;text-shadow:0 1px 0 #fff,1px 0 0 #fff,0 -1px 0 #fff,-1px 0 0 #fff;cursor:pointer;-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.active{fill:#6bb9f0}.parented{fill:#ebc6ad}
+graph {
+  overflow: hidden;
+}
+.site-content-toolbar {
+  background: #f6f6f6 !important;
+  color: rgba(0,0,0,0.87) !important;
+}
+a {
+  color: #106cc8;
+  text-decoration: none;
+  font-weight: 400;
+  border-bottom: 1px solid rgba(64,84,178,0.25);
+  -webkit-transition: border-bottom 0.35s;
+  transition: border-bottom 0.35s;
+}
+a:hover,
+a:focus {
+  border-bottom: 1px solid #4054b2;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+ul li {
+  margin-left: 16px;
+  padding: 0;
+  margin-top: 3px;
+  list-style-position: inside;
+}
+ul li:first-child {
+  margin-top: 0;
+}
+textarea {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  width: 500px;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  height: 46px;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 15px;
+  padding: 3px;
+}
+textarea:focus {
+  height: 200px;
+}
+.md-toolbar-tools {
+  height: initial;
+  max-height: initial;
+}
+.autocomplete-header-template li {
+  border-bottom: 1px solid #ddd;
+  height: auto;
+  padding: 4px 8px;
+  white-space: normal;
+}
+.autocomplete-header-template li:last-child {
+  border-bottom-width: 0;
+}
+.autocomplete-header-template .item-label,
+.autocomplete-header-template .item-description {
+  display: block;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.autocomplete-header-template .item-description {
+  font-size: smaller;
+}
+md-toolbar md-autocomplete input {
+  padding: 0 0 0 8px !important;
+}
+.md-toolbar-tools {
+  font-size: 16px;
+}
+.md-toolbar-tools > * {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+.md-toolbar-tools label {
+  font-size: 14px;
+}
+.md-toolbar-tools .md-errors-spacer {
+  display: none;
+}
+.main-content {
+  width: auto;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+md-progress-linear {
+  position: absolute;
+  -webkit-transition: opacity 0.1s linear;
+  transition: opacity 0.1s linear;
+}
+md-progress-linear .md-container {
+  height: 2px;
+}
+.footer {
+  font-size: small;
+}
+line {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+circle {
+  fill: #ccc;
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+text {
+  font: 10px sans-serif;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.active {
+  fill: #6bb9f0;
+}
+.parented {
+  fill: #ebc6ad;
+}
