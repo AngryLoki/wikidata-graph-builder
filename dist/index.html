@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-strict-di>
   <head>
     <link rel="stylesheet" href="assets/css/angular-material.min.css">
     <link rel="stylesheet" href="assets/css/main.css">
@@ -14,54 +14,70 @@
     <meta name="viewport" content="width=device-width">
     <title>Wikidata Graph Builder</title>
   </head>
-  <body ng-app="WgbApp" ng-cloak>
-    <div layout="column" tabIndex="-1" role="main" flex ng-controller="FormCtrl as ctrl">
-      <md-toolbar class="md-whiteframe-glow-z1 md-hue-1 site-content-toolbar">
-        <div layout-align="center center" class="md-toolbar-tools">
-          <h3><a href="?" ng-click="ctrl.reset()">WGB</a></h3><span flex></span>
-          <md-input-container>
+  <body ng-app="WgbApp" ng-cloak layout="row" flex ng-controller="FormCtrl as ctrl">
+    <md-sidenav ng-style="{'min-width': wdqs_edit ? '100%' : '300px', 'max-width': wdqs_edit ? '100%' : '300px'}" md-component-id="left" md-is-locked-open="true" class="md-sidenav-left md-whiteframe-z2">
+      <md-toolbar class="md-theme-indigo">
+        <h1 class="md-toolbar-tools"> <a href="?" ng-click="ctrl.reset()">WGB</a></h1>
+      </md-toolbar>
+      <md-content layout-padding flex>
+        <div layout="row">
+          <md-input-container flex>
             <label>Mode</label>
-            <md-select ng-model="ctrl.mode" style="width: 100px">
-              <md-option ng-value="mode.mode" ng-repeat="mode in ctrl.modes">{{ mode.text }}</md-option>
+            <md-select ng-model="ctrl.mode">
+              <md-option ng-value="key" ng-repeat="(key, value) in ctrl.modes">{{ value }}</md-option>
             </md-select>
           </md-input-container>
-          <textarea ng-model="ctrl.wdqs" ng-show="ctrl.mode === 'wdqs'">query</textarea>
-          <md-input-container ng-show="ctrl.mode !== 'wdqs'">
+          <md-input-container flex ng-show="ctrl.mode !== 'wdqs'">
             <label>Language</label>
-            <input ng-model="ctrl.lang" type="text" placeholder="??" size="4" style="width: 50px">
+            <input ng-model="ctrl.lang" type="text" placeholder="??" size="4">
           </md-input-container>
-          <md-autocomplete required ng-show="ctrl.mode !== 'wdqs'" md-selected-item="ctrl.item" md-search-text="ctrl.itemText" md-items="item in ctrl.itemSearch(ctrl.itemText)" md-item-text="item.label" md-min-length="1" placeholder="Item" style="width: 190px" md-menu-class="autocomplete-header-template">
-            <md-item-template><span class="item-label">{{item.label}}</span><span class="item-description">{{item.description}}</span></md-item-template>
-            <md-not-found>No items matching "{{ctrl.searchText}}"</md-not-found>
-          </md-autocomplete>
-          <md-autocomplete required ng-show="ctrl.mode !== 'wdqs'" md-selected-item="ctrl.property" md-search-text="ctrl.propertyText" md-items="item in ctrl.propertySearch(ctrl.propertyText)" md-item-text="item.label" md-min-length="1" placeholder="Property" style="width: 190px" md-menu-class="autocomplete-header-template">
-            <md-item-template><span class="item-label">{{item.label}}</span><span class="item-description">{{item.description}}</span></md-item-template>
-            <md-not-found>No properties matching "{{ctrl.searchText}}"</md-not-found>
-          </md-autocomplete>
-          <md-input-container ng-show="ctrl.mode !== 'wdqs'">
-            <label for="iterations">Iterations</label>
-            <input ng-model="ctrl.iterations" type="number" value="0" min="0" style="width: 50px">
-          </md-input-container>
-          <md-input-container ng-show="ctrl.mode !== 'wdqs'">
-            <label>Limit</label>
-            <input ng-model="ctrl.limit" type="number" value="0" min="0" size="2" style="width: 50px">
-          </md-input-container>
-          <md-button ng-click="ctrl.build()" ng-disabled="!ctrl.validate()" class="md-primary md-raised">Build</md-button>
-          <md-menu md-position-mode="target-right target">
-            <md-button ng-disabled="!ctrl.validate()" ng-click="$mdOpenMenu($event)" class="md-raised">Tools</md-button>
-            <md-menu-content width="4">
-              <md-menu-item>
-                <md-button ng-click="ctrl.query()" ng-disabled="!ctrl.validate()">Wikidata Query Service</md-button>
-              </md-menu-item>
-              <md-menu-item>
-                <md-button ng-click="ctrl.list()" ng-disabled="!(ctrl.validate() &amp;&amp; (ctrl.mode == 'forward' || ctrl.mode == 'reverse'))">Wikidata generic tree</md-button>
-              </md-menu-item>
-            </md-menu-content>
-          </md-menu><span flex></span>
         </div>
-      </md-toolbar>
+        <textarea ng-model="ctrl.wdqs" ng-show="ctrl.mode === 'wdqs'" ng-focus="wdqs_edit = true" ng-blur="wdqs_edit = false">query</textarea>
+        <md-autocomplete ng-show="ctrl.mode !== 'wdqs'" md-selected-item="ctrl.itemObject" md-search-text="ctrl.itemText" md-items="item in ctrl.itemSearch(ctrl.itemText)" md-item-text="item.label" md-min-length="1" md-menu-class="autocomplete-header-template" md-floating-label="Root Item">
+          <md-item-template><span class="item-label">{{item.label}}</span><span class="item-description">{{item.description}}</span></md-item-template>
+          <md-not-found>No results</md-not-found>
+        </md-autocomplete>
+        <md-autocomplete ng-show="ctrl.mode !== 'wdqs'" md-selected-item="ctrl.propertyObject" md-search-text="ctrl.propertyText" md-items="item in ctrl.propertySearch(ctrl.propertyText)" md-item-text="item.label" md-min-length="1" md-menu-class="autocomplete-header-template" md-floating-label="Travelsal Property">
+          <md-item-template><span class="item-label">{{item.label}}</span><span class="item-description">{{item.description}}</span></md-item-template>
+          <md-not-found>No results</md-not-found>
+        </md-autocomplete>
+        <div layout="row">
+          <md-input-container flex ng-show="ctrl.mode !== 'wdqs'">
+            <label for="iterations">Iterations</label>
+            <input ng-model="ctrl.iterations" type="number" value="0" min="0">
+          </md-input-container>
+          <md-input-container flex ng-show="ctrl.mode !== 'wdqs'">
+            <label>Limit</label>
+            <input ng-model="ctrl.limit" type="number" value="0" min="0" size="2">
+          </md-input-container>
+        </div>
+        <md-autocomplete ng-show="ctrl.mode !== 'wdqs'" md-selected-item="ctrl.size_propertyObject" md-search-text="ctrl.size_propertyText" md-items="item in ctrl.propertySearch(ctrl.size_propertyText)" md-item-text="item.label" md-min-length="1" md-menu-class="autocomplete-header-template" md-floating-label="Size Property">
+          <md-item-template><span class="item-label">{{item.label}}</span><span class="item-description">{{item.description}}</span></md-item-template>
+          <md-not-found>No results</md-not-found>
+        </md-autocomplete>
+        <div layout="row" style="margin: 9px 4px 9px 0">
+          <div flex>
+            <md-button style="margin-right: 4px" layout-fill ng-click="ctrl.submit()" ng-disabled="!ctrl.validate()" class="md-primary md-raised">Build</md-button>
+          </div>
+          <div flex>
+            <md-menu>
+              <md-button style="margin-left: 5px" layout-fill ng-disabled="!ctrl.validate()" ng-click="$mdOpenMenu($event)" class="md-raised">Tools</md-button>
+              <md-menu-content width="4">
+                <md-menu-item>
+                  <md-button ng-click="ctrl.query()" ng-disabled="!ctrl.validate()">Wikidata Query Service</md-button>
+                </md-menu-item>
+                <md-menu-item>
+                  <md-button ng-click="ctrl.list()" ng-disabled="!(ctrl.validate() &amp;&amp; (ctrl.mode == 'forward' || ctrl.mode == 'reverse'))">Wikidata generic tree</md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
+        </div>
+      </md-content>
+    </md-sidenav>
+    <div layout="column" layout-fill>
       <md-progress-linear md-mode="query" ng-show="ctrl.isLoading"> </md-progress-linear>
-      <md-content ng-hide="ctrl.showSvg &amp;&amp; ctrl.wdqs" md-scroll-y layout="column" flex layout-padding>
+      <md-content ng-hide="ctrl.showSvg &amp;&amp; ctrl.wdqs" md-scroll-y layout-padding>
         <div class="main-content">
           <h1 class="md-display-2">Wikidata Graph Builder</h1>
           <noscript>Wikidata Graph Builder requires JavaScript to be enabled</noscript>
@@ -77,11 +93,12 @@
             <li><a href="?property=P279&amp;item=Q207712&amp;mode=both">Subclasses and parent classes of period 2 elements</a></li>
             <li><a href="?property=P161&amp;item=Q40504&amp;mode=undirected&amp;iterations=2">People, who were filmed with Jim Carrey</a></li>
             <li><a href="?mode=wdqs&amp;wdqs=SELECT%20%3Fitem%20%3FitemLabel%20%3FlinkTo%20%7B%0A%20%20%3Fitem%20wdt:P31%20wd:Q35657%20.%0A%20%20OPTIONAL%20%7B%20%3FlinkTo%20wdt:P47%20%3Fitem%20;%20wdt:P31%20wd:Q35657%20%7D%20.%0A%0A%20%20SERVICE%20wikibase:label%20%7Bbd:serviceParam%20wikibase:language%20&quot;en&quot;%20%7D%0A%7D">Connectivity of the USA states</a></li>
+            <li><a href="?property=P279&amp;item=Q33999&amp;mode=reverse&amp;size_property=P106">Usage of subclasses of actors</a></li>
           </ul>
           <p class="footer">The source code released under <a href="http://opensource.org/licenses/MIT">MIT license</a> at <a href="https://github.com/AngryLoki/wikidata-tree-builder">GitHub</a>.</p>
         </div>
       </md-content>
-      <graph graph-data="ctrl.graphData" active-item="ctrl.activeItem" mode="ctrl.mode"></graph>
+      <graph graph-data="ctrl.graphData" active-item="ctrl.activeItem" mode="ctrl.mode" size-log-scale="ctrl.size_log_scale"></graph>
     </div>
   </body>
 </html>

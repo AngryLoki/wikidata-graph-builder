@@ -14,7 +14,7 @@ before_script:
 script:
   - git config --global user.name "Travis CI"
   - git config --global user.email "AngryLoki@users.noreply.github.com"
-  - gulp build
+  - gulp build --production
   - gulp deploy
 
 cache:

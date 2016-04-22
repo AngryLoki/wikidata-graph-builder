@@ -1,5 +1,39 @@
+mixin itemField(ob, label)
+  md-autocomplete(
+    ng-show="ctrl.mode !== 'wdqs'"
+    md-selected-item=ob + "Object"
+    md-search-text=ob + "Text"
+    md-items="item in ctrl.itemSearch(" + ob + "Text)"
+    md-item-text="item.label"
+    md-min-length="1"
+    md-menu-class="autocomplete-header-template"
+    md-floating-label=label
+  )
+    md-item-template
+      span.item-label {{item.label}}
+      span.item-description {{item.description}}
+    md-not-found
+      | No results
+
+mixin propertyField(ob, label)
+  md-autocomplete(
+    ng-show="ctrl.mode !== 'wdqs'"
+    md-selected-item=ob + "Object"
+    md-search-text=ob + "Text"
+    md-items="item in ctrl.propertySearch(" + ob + "Text)"
+    md-item-text="item.label"
+    md-min-length="1"
+    md-menu-class="autocomplete-header-template"
+    md-floating-label=label
+  )
+    md-item-template
+      span.item-label {{item.label}}
+      span.item-description {{item.description}}
+    md-not-found
+      | No results
+    
 doctype html
-html
+html(ng-strict-di)
   head
     link(rel="stylesheet" href="assets/css/angular-material.min.css")
     link(rel="stylesheet" href="assets/css/main.css")
@@ -15,96 +49,73 @@ html
     meta(charset="utf-8")
     meta(name="viewport" content="width=device-width")
     title Wikidata Graph Builder
-  body(ng-app="WgbApp" ng-cloak)
-    div(layout="column" tabIndex="-1" role="main" flex ng-controller="FormCtrl as ctrl")
-      md-toolbar.md-whiteframe-glow-z1.md-hue-1.site-content-toolbar
-        .md-toolbar-tools(layout-align="center center")
-          h3
-            a(href="?" ng-click="ctrl.reset()") WGB
-          span(flex)
-          
-          md-input-container
+  body(ng-app="WgbApp" ng-cloak layout="row" flex ng-controller="FormCtrl as ctrl")
+    md-sidenav(
+      ng-style="{'min-width': wdqs_edit ? '100%' : '300px', 'max-width': wdqs_edit ? '100%' : '300px'}"
+      class="md-sidenav-left md-whiteframe-z2"
+      md-component-id="left"
+      md-is-locked-open="true"
+    )
+      md-toolbar(class="md-theme-indigo")
+        h1(class="md-toolbar-tools") 
+          a(href="?" ng-click="ctrl.reset()") WGB
+      md-content(layout-padding flex)
+        div(layout="row")
+          md-input-container(flex)
             label Mode
-            md-select(ng-model="ctrl.mode" style="width: 100px")
-              md-option(ng-value="mode.mode" ng-repeat="mode in ctrl.modes") {{ mode.text }}
-
-          textarea(ng-model="ctrl.wdqs" ng-show="ctrl.mode === 'wdqs'") query
+            md-select(ng-model="ctrl.mode")
+              md-option(ng-value="key" ng-repeat="(key, value) in ctrl.modes") {{ value }}
             
-          md-input-container(ng-show="ctrl.mode !== 'wdqs'")
+          md-input-container(flex ng-show="ctrl.mode !== 'wdqs'")
             label Language
-            input(ng-model="ctrl.lang" type="text" placeholder="??" size="4" style="width: 50px")
-
-          md-autocomplete(
-            required
-            ng-show="ctrl.mode !== 'wdqs'"
-            md-selected-item="ctrl.item"
-            md-search-text="ctrl.itemText"
-            md-items="item in ctrl.itemSearch(ctrl.itemText)"
-            md-item-text="item.label"
-            md-min-length="1"
-            placeholder="Item"
-            style="width: 190px"
-            md-menu-class="autocomplete-header-template"
-          )
-            md-item-template
-              span.item-label {{item.label}}
-              span.item-description {{item.description}}
-            md-not-found
-              | No items matching "{{ctrl.searchText}}"
-
-          md-autocomplete(
-            required
-            ng-show="ctrl.mode !== 'wdqs'"
-            md-selected-item="ctrl.property"
-            md-search-text="ctrl.propertyText"
-            md-items="item in ctrl.propertySearch(ctrl.propertyText)"
-            md-item-text="item.label"
-            md-min-length="1"
-            placeholder="Property"
-            style="width: 190px"
-            md-menu-class="autocomplete-header-template"
-          )
-            md-item-template
-              span.item-label {{item.label}}
-              span.item-description {{item.description}}
-            md-not-found
-              | No properties matching "{{ctrl.searchText}}"
-          
-          md-input-container(ng-show="ctrl.mode !== 'wdqs'")
+            input(ng-model="ctrl.lang" type="text" placeholder="??" size="4")
+    
+        textarea(ng-model="ctrl.wdqs" ng-show="ctrl.mode === 'wdqs'" ng-focus="wdqs_edit = true" ng-blur="wdqs_edit = false") query
+        
+        +itemField("ctrl.item", "Root Item")
+        +propertyField("ctrl.property", "Travelsal Property")
+        
+        div(layout="row")
+          md-input-container(flex ng-show="ctrl.mode !== 'wdqs'")
             label(for="iterations") Iterations
-            input(
-              ng-model="ctrl.iterations" type="number" value="0" min="0" 
-              style="width: 50px")
+            input(ng-model="ctrl.iterations" type="number" value="0" min="0")
           
-          md-input-container(ng-show="ctrl.mode !== 'wdqs'")
+          md-input-container(flex ng-show="ctrl.mode !== 'wdqs'")
             label Limit
-            input(
-              ng-model="ctrl.limit" type="number" value="0" min="0" 
-              size="2" style="width: 50px")
-          
-          md-button.md-primary.md-raised(
-            ng-click="ctrl.build()"
-            ng-disabled="!ctrl.validate()"
-          ) Build
-          
-          md-menu(md-position-mode="target-right target")
-            md-button.md-raised(
+            input(ng-model="ctrl.limit" type="number" value="0" min="0" size="2")
+              
+        +propertyField("ctrl.size_property", "Size Property")
+        
+        //- md-checkbox(ng-model="ctrl.size_recursive") Recursive Size
+        //- md-checkbox(ng-model="ctrl.size_log_scale") Log10 Size
+        
+        div(layout="row" style="margin: 9px 4px 9px 0")
+          div(flex)
+            md-button.md-primary.md-raised(
+              style="margin-right: 4px"
+              layout-fill
+              ng-click="ctrl.submit()"
               ng-disabled="!ctrl.validate()"
-              ng-click="$mdOpenMenu($event)"
-            ) Tools
-            md-menu-content(width="4")
-              md-menu-item
-                md-button(ng-click="ctrl.query()" ng-disabled="!ctrl.validate()") Wikidata Query Service
-              md-menu-item
-                md-button(ng-click="ctrl.list()" ng-disabled="!(ctrl.validate() && (ctrl.mode == 'forward' || ctrl.mode == 'reverse'))") Wikidata generic tree
+            ) Build
+            
+          div(flex)
+            md-menu
+              md-button.md-raised(
+                style="margin-left: 5px"
+                layout-fill
+                ng-disabled="!ctrl.validate()"
+                ng-click="$mdOpenMenu($event)"
+              ) Tools
+              md-menu-content(width="4")
+                md-menu-item
+                  md-button(ng-click="ctrl.query()" ng-disabled="!ctrl.validate()") Wikidata Query Service
+                md-menu-item
+                  md-button(ng-click="ctrl.list()" ng-disabled="!(ctrl.validate() && (ctrl.mode == 'forward' || ctrl.mode == 'reverse'))") Wikidata generic tree
 
-          
-          span(flex)
-      
+    div(layout="column" layout-fill)
       md-progress-linear(md-mode="query" ng-show="ctrl.isLoading")
         | 
-
-      md-content(ng-hide="ctrl.showSvg && ctrl.wdqs" md-scroll-y layout="column" flex layout-padding)
+      md-content(ng-hide="ctrl.showSvg && ctrl.wdqs" md-scroll-y layout-padding)
         div.main-content
           h1.md-display-2 Wikidata Graph Builder
 
@@ -127,7 +138,8 @@ html
               ['Subclasses of physicists', '?property=P279&item=Q169470&lang=en&mode=reverse'],
               ['Subclasses and parent classes of period 2 elements', '?property=P279&item=Q207712&mode=both'],
               ['People, who were filmed with Jim Carrey', '?property=P161&item=Q40504&mode=undirected&iterations=2'],
-              ['Connectivity of the USA states', '?mode=wdqs&wdqs=SELECT%20%3Fitem%20%3FitemLabel%20%3FlinkTo%20%7B%0A%20%20%3Fitem%20wdt:P31%20wd:Q35657%20.%0A%20%20OPTIONAL%20%7B%20%3FlinkTo%20wdt:P47%20%3Fitem%20;%20wdt:P31%20wd:Q35657%20%7D%20.%0A%0A%20%20SERVICE%20wikibase:label%20%7Bbd:serviceParam%20wikibase:language%20"en"%20%7D%0A%7D']
+              ['Connectivity of the USA states', '?mode=wdqs&wdqs=SELECT%20%3Fitem%20%3FitemLabel%20%3FlinkTo%20%7B%0A%20%20%3Fitem%20wdt:P31%20wd:Q35657%20.%0A%20%20OPTIONAL%20%7B%20%3FlinkTo%20wdt:P47%20%3Fitem%20;%20wdt:P31%20wd:Q35657%20%7D%20.%0A%0A%20%20SERVICE%20wikibase:label%20%7Bbd:serviceParam%20wikibase:language%20"en"%20%7D%0A%7D'],
+              ['Usage of subclasses of actors', '?property=P279&item=Q33999&mode=reverse&size_property=P106']
             ]
           
           ul
@@ -136,5 +148,4 @@ html
               
           p.footer The source code released under #[a(href="http://opensource.org/licenses/MIT") MIT license] at #[a(href="https://github.com/AngryLoki/wikidata-tree-builder") GitHub].
 
-      //- svg(id="graph" ng-show="ctrl.showSvg && ctrl.wdqs" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink")
-      graph(graph-data="ctrl.graphData" active-item="ctrl.activeItem" mode="ctrl.mode")
+      graph(graph-data="ctrl.graphData" active-item="ctrl.activeItem" mode="ctrl.mode" size-log-scale="ctrl.size_log_scale")

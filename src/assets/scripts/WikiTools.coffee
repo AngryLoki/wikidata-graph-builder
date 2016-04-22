@@ -1,8 +1,6 @@
 WikiTools = angular.module('WikiTools', [])
 
 WikiToolsService = ($log, $http, $httpParamSerializer) ->
-  self = @
-
   wdApiParams = $httpParamSerializer
     format: 'json'
     formatversion: 2
@@ -17,7 +15,7 @@ WikiToolsService = ($log, $http, $httpParamSerializer) ->
   @get = (api, params) ->
     $http.jsonp(api, params: params)
 
-  @searchEntities = (type, query, language) ->
+  @searchEntities = (type, query, language) =>
     params =
       action: 'wbsearchentities'
       search: query
@@ -28,9 +26,9 @@ WikiToolsService = ($log, $http, $httpParamSerializer) ->
 
     success = (response) => response.data.search
     error = (response) -> $log.error 'Request failed'; reject 'Request failed'
-    self.get(self.wikidata, params).then(success, error)
+    @get(@wikidata, params).then(success, error)
 
-  @getEntity = (what, language) ->
+  @getEntity = (what, language) =>
     params =
       action: 'wbsearchentities'
       search: what
@@ -39,9 +37,15 @@ WikiToolsService = ($log, $http, $httpParamSerializer) ->
       type: if what.startsWith('Q') then 'item' else 'property'
       limit: 1
 
-    success = (response) => response.data.search[0]
+    success = (response) =>
+      if not response.data.search
+        id: what, label: what, lang: language
+      else
+        out = response.data.search[0]
+        out.lang = language
+        out
     error = (response) -> $log.error 'Request failed'; reject 'Request failed'
-    self.get(self.wikidata, params).then(success, error)
+    @get(@wikidata, params).then(success, error)
 
   @wdqs = (query) ->
     $http.get('https://query.wikidata.org/sparql', params: query: query)

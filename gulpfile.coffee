@@ -32,6 +32,7 @@ gulp.task 'bower-css', ->
 gulp.task 'bower-js', ->
     gulp.src([
         'bower_components/**/*.min.js'
+        'bower_components/**/color-hash.js'
         '!bower_components/angular-material/modules/**/*.min.js'
     ])
     .pipe $.flatten()
@@ -76,7 +77,6 @@ gulp.task 'templates', ->
 gulp.task 'bower', -> $.bower()
 
 gulp.task 'deploy', ->
-    production = yes
     ghToken = process.env.GH_TOKEN
     ghRef = process.env.GH_REF
     conf = remoteUrl: "https://#{ghToken}@#{ghRef}" if ghToken and ghRef
