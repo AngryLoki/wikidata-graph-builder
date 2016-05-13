@@ -37,3 +37,6 @@ bower_components
 
 # gulp-gh-pages generated files
 .publish
+
+# compiled project files
+dist
