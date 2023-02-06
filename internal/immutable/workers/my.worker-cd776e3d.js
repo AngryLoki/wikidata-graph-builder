@@ -1,1 +1,0 @@
-(function(){"use strict";let t,e,a=0;const s=()=>{e.clearRect(0,0,600,600),e.beginPath(),e.arc(a%200,100,10,0,2*Math.PI),e.fillStyle="red",e.fill(),a++,self.requestAnimationFrame(s)};onmessage=({data:c})=>{console.log("Worker received a message from the main thread");const{canvas:n}=c;n?t=n:(e=t.getContext("2d"),s())}})();
