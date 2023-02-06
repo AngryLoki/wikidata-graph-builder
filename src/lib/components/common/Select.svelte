@@ -136,7 +136,7 @@
         focus-visible:outline-none focus-visible:border-blue-500
         {dropdownVisible
             ? 'border-blue-500 bg-black/10'
-            : 'bg-transparent hover:bg-white/5 border-transparent hover:border-white/5'}
+            : 'bg-transparent hover:bg-gray-300/5 nohover:bg-gray-300/5 border-transparent hover:border-gray-300/5'}
             {cls}"
         on:click={onClick}
         on:keydown={onButtonKeyDown}
@@ -153,7 +153,7 @@
             class="fill-gray-400 h-4 w-4 absolute top-1 right-0 transition-opacity
             {dropdownVisible
                 ? 'opacity-100'
-                : 'opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'}"
+                : 'opacity-0 nohover:opacity-100 group-hover:opacity-100 group-focus-visible:opacity-100'}"
             role="presentation"
         />
     </button>

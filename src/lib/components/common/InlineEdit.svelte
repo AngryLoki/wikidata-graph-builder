@@ -1,7 +1,7 @@
 <script lang="ts">
     import IconEx from "./IconEx.svelte";
     import MultilineField from "./MultilineField.svelte";
-    import { mdiAlertCircleOutline } from "@mdi/js";
+    import { mdiAlertCircleOutline, mdiPencil } from "@mdi/js";
     import { createEventDispatcher, tick } from "svelte";
     import { useActions } from "svelte-useactions";
     import type { ActionList } from "svelte-useactions";
@@ -118,11 +118,12 @@
     role="button"
     use:useActions={use}
     class="flex items-stretch w-full transition-all rounded-sm border-[1.99px] cursor-text
-    text-gray-200 focus-within:border-blue-500 hover:focus-within:border-blue-500 selection:bg-blue-600/60 selection:text-gray-200
+    text-gray-200 selection:text-gray-200 selection:bg-blue-600/60
     {edit
-        ? 'bg-gray-950 hover:bg-gray-900 focus-within:bg-black hover:focus-within:bg-black ' +
-          (invalid ? 'border-red-500' : 'border-white/5')
-        : 'bg-transparent border-transparent hover:border-white/5 hover:bg-white/5'}
+        ? 'bg-gray-950 focus-within:bg-black hover:focus-within:bg-black ' +
+          (invalid ? 'border-red-500' : 'border-gray-300/5')
+        : 'bg-transparent hover:bg-gray-300/5 border-transparent hover:border-gray-300/5 nohover:bg-gray-400/5'}
+    focus-within:border-blue-500 hover:focus-within:border-blue-500
     {cls}"
     on:click={enterEditMode}
     on:keydown={enterEditMode}
@@ -167,7 +168,6 @@
                 <slot>{value + "\n"}</slot>
             {/if}
         </div>
-
         <button tabindex="-1" class="block min-w-[1rem] grow cursor-text">
             &nbsp;
         </button>

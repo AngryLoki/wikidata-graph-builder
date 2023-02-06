@@ -166,9 +166,11 @@
             tabindex="-1"
             class="w-6 flex-none flex justify-center items-center
             {canDecrement
-                ? 'cursor-pointer hover:bg-white/5'
+                ? 'cursor-pointer hover:bg-gray-300/5'
                 : 'cursor-default'}
-            {edit ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
+            {edit
+                ? 'opacity-100'
+                : 'opacity-0 nohover:opacity-100 group-hover:opacity-100'}
             transition-opacity"
         >
             <IconEx
@@ -186,9 +188,11 @@
             tabindex="-1"
             class="w-6 flex-none flex justify-center items-center 
             {canIncrement
-                ? 'cursor-pointer hover:bg-white/5'
+                ? 'cursor-pointer hover:bg-gray-300/5'
                 : 'cursor-default'}
-            {edit ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}
+            {edit
+                ? 'opacity-100'
+                : 'opacity-0 nohover:opacity-100 group-hover:opacity-100'}
             transition-opacity"
         >
             <IconEx

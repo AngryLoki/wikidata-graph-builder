@@ -31,6 +31,7 @@ module.exports = {
 			},
 			screens: {
 				coarse: {raw: '(pointer: coarse)'},
+				nohover: {raw: '(hover: none)'},
 			},
 			keyframes: {
 				'spin-appear': {
@@ -52,5 +53,8 @@ module.exports = {
 	],
 	experimental: {
 		optimizeUniversalDefaults: true,
+	},
+	future: {
+		hoverOnlyWhenSupported: true,
 	},
 };

@@ -55,7 +55,7 @@
 		class="text-left border-[1.99px] rounded-sm
 		{dropdownVisible
 			? 'border-blue-500 bg-gray-950'
-			: 'border-transparent hover:border-white/5 hover:bg-white/5'}
+			: 'border-transparent hover:border-gray-300/5 hover:bg-gray-300/5 nohover:bg-gray-300/5'}
 		focus-visible:outline-none focus-visible:border-blue-500 focus-visible:hover:border-blue-500
 		transition px-1 leading-6 h-6 box-content flex items-center
 		{cls}"

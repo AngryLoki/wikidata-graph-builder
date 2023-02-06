@@ -58,7 +58,7 @@
 		on:click={() => {
 			expanded = !expanded;
 		}}
-		class="w-full leading-6 py-0.5 text-gray-300 bg-transparent hover:bg-white/5 active:bg-black/5 transition-colors"
+		class="w-full leading-6 py-0.5 text-gray-300 bg-transparent hover:bg-gray-300/5 active:bg-black/5 transition-colors"
 	>
 		{expanded ? "Collapse" : "Show visualization settings"}
 	</button>

@@ -36,6 +36,7 @@
     const rootPage = $page.url.origin + $page.url.pathname;
 
     const onQueryFormSubmit = async (event: CustomEvent<QueryParameters>) => {
+        drawerVisible = false;
         await updateUrl(event.detail, appParameters.visParameters, false);
     };
 
