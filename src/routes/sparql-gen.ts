@@ -9,6 +9,9 @@ export type QueryParameters = {
 	mode: AppMode;
 	wdqs: string | undefined;
 	sizeProperty: string | undefined;
+	special?: {
+		instanceOrSubclass?: boolean;
+	};
 };
 
 export const queryParametersIsValid = (state: QueryParameters) =>
@@ -70,6 +73,52 @@ export const generateQuery = (options: QueryParameters | undefined) => {
 	const out = useGas(options) ? 'PREFIX gas: <http://www.bigdata.com/rdf/gas#>\n\n' : '';
 	const language = options.language === 'en' ? 'en' : (options.language + ',en');
 	const languageService = `SERVICE wikibase:label {bd:serviceParam wikibase:language "${language}" }`;
+
+	if (options.special?.instanceOrSubclass) {
+		const clauses: string[] = [];
+
+		if (options.mode === 'forward' || options.mode === 'both') {
+			clauses.push(`\
+				{
+					BIND(wd:${options.item} AS ?item)
+					OPTIONAL { ?item wdt:P31 ?altLinkTo }
+				}
+				UNION
+				{
+					wd:${options.item} wdt:P279* ?item
+					OPTIONAL { ?item wdt:P279 ?linkTo }
+				}
+				UNION
+				{
+					wd:${options.item} wdt:P31 ?instance .
+					?instance wdt:P279* ?item .
+					OPTIONAL { ?item wdt:P279 ?linkTo }
+				}\
+				`);
+		}
+
+		if (options.mode === 'reverse' || options.mode === 'both') {
+			clauses.push(`\
+				{
+					?item wdt:P279* wd:${options.item}
+					OPTIONAL { ?item wdt:P279 ?linkTo }
+				}
+				UNION
+				{
+					?class wdt:P279* wd:${options.item} .
+					?item wdt:P31 ?class .
+					OPTIONAL { ?item wdt:P31 ?altLinkTo }
+				}\
+				`);
+		}
+
+		return `\
+			SELECT DISTINCT ?item ?itemLabel ?linkTo ?altLinkTo {
+				${clauses.join('\nUNION\n')}
+				${languageService}
+			}\
+			`;
+	}
 
 	if (options.sizeProperty) {
 		return out
