@@ -1,4 +1,6 @@
-import {generateQuery, type AppMode, type QueryParameters, queryParametersIsValid} from './sparql-gen';
+import {
+	generateQuery, type AppMode, type QueryParameters, queryParametersIsValid,
+} from './sparql-gen';
 import {goto} from '$app/navigation';
 import type {GraphLayout, ShortcutsMode, VisParameters} from '$lib/force-graph/types';
 

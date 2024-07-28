@@ -1,4 +1,6 @@
-import type {AutocompleteItem, AutocompleteResult, LangValue, LoadMoreFunction, ValueItem} from '../common/autocomplete-input';
+import type {
+	AutocompleteItem, AutocompleteResult, LangValue, LoadMoreFunction, ValueItem,
+} from '../common/autocomplete-input';
 import {MwApiService} from '$lib/mw-api-service';
 import type {WikibaseEntityCommon} from '$lib/wdtypes';
 

@@ -3,6 +3,10 @@ import type {UserConfig} from 'vite';
 
 const config: UserConfig = {
 	plugins: [sveltekit()],
+	worker: {
+		plugins: [sveltekit()],
+		format: 'es',
+	},
 };
 
 export default config;

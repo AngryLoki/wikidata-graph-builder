@@ -16,10 +16,10 @@ const isLocalStorageAvailable = () => {
 	}
 };
 
-const makeCachedFunction = <T>(key: string, valueFn: () => Promise<T>, expiryMs: number, version: number) => async () => {
+const makeCachedFunction = <T>(key: string, valueFunction: () => Promise<T>, expiryMs: number, version: number) => async () => {
 	if (!isLocalStorageAvailable()) {
 		console.log(`localStorage is not available, cache won't be used for ${key}`);
-		return valueFn();
+		return valueFunction();
 	}
 
 	const stored = localStorage.getItem(key);
@@ -31,7 +31,7 @@ const makeCachedFunction = <T>(key: string, valueFn: () => Promise<T>, expiryMs:
 		}
 	}
 
-	const value = await valueFn();
+	const value = await valueFunction();
 	localStorage.setItem(key, JSON.stringify({
 		date: Date.now(),
 		version,
