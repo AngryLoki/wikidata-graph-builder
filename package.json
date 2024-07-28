@@ -68,9 +68,9 @@
 		"vite": "^4.1.1",
 		"xo": "^0.53.1"
 	},
-	"packageManager": "pnpm@7.9.5",
+	"packageManager": "pnpm@9.6.0",
 	"engines": {
-		"pnpm": "^7.0.0"
+		"pnpm": ">=9.0.0"
 	},
 	"type": "module",
 	"xo": {
