@@ -81,7 +81,7 @@ export const generateQuery = (options: QueryParameters | undefined) => {
 			clauses.push(`\
 				{
 					BIND(wd:${options.item} AS ?item)
-					OPTIONAL { ?item wdt:P31 ?altLinkTo }
+					OPTIONAL { ?item wdt:P31 ?linkTo BIND("instance" AS ?linkType) }
 				}
 				UNION
 				{
@@ -107,13 +107,13 @@ export const generateQuery = (options: QueryParameters | undefined) => {
 				{
 					?class wdt:P279* wd:${options.item} .
 					?item wdt:P31 ?class .
-					OPTIONAL { ?item wdt:P31 ?altLinkTo }
+					OPTIONAL { ?item wdt:P31 ?linkTo BIND("instance" AS ?linkType) }
 				}\
 				`);
 		}
 
 		return `\
-			SELECT DISTINCT ?item ?itemLabel ?linkTo ?altLinkTo {
+			SELECT DISTINCT ?item ?itemLabel ?linkTo ?linkType {
 				${clauses.join('\nUNION\n')}
 				${languageService}
 			}\
