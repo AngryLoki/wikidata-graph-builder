@@ -2,7 +2,7 @@
 Visualize [Wikidata](https://www.wikidata.org) items using [d3.js](http://d3js.org/).
 
 ## Main features
-* Forward and backward graph traversal using [RDF GAS API](https://wiki.blazegraph.com/wiki/index.php/RDF_GAS_API)
+* Forward and backward graph traversal using [RDF GAS API](https://github.com/blazegraph/database/wiki/RDF_GAS_API)
 * Support for various languages for item labels
 * Limits for number of iterations and number of items in graph
 * SPARQL query generation for [Wikidata Query Service](https://query.wikidata.org/) and links to [Wikidata generic tree](https://tools.wmflabs.org/wikidata-todo/tree.html)
