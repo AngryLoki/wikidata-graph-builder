@@ -68,7 +68,7 @@ export const generateQuery = (options: QueryParameters | undefined) => {
 	}
 
 	const out = useGas(options) ? 'PREFIX gas: <http://www.bigdata.com/rdf/gas#>\n\n' : '';
-	const language = options.language === 'en' ? 'en' : (options.language + ',en');
+	const language = options.language === 'en' ? 'en,mul' : (options.language + ',mul,en');
 	const languageService = `SERVICE wikibase:label {bd:serviceParam wikibase:language "${language}" }`;
 
 	if (options.sizeProperty) {
