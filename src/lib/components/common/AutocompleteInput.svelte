@@ -307,11 +307,12 @@
                         id="option-{id}-{idx}"
                         {item}
                         active={idx === activeAutocompleteItem}
-                        on:mouseenter={() => {
+                        onmouseenter={() => {
                             activeAutocompleteItem = idx;
                         }}
-                        on:click={() => {
+                        onclick={(event) => {
                             acceptItem(item.value);
+                            event.preventDefault();
                         }}
                     />
                 {/each}

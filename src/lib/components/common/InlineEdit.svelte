@@ -30,7 +30,6 @@
     export let value: string | undefined = undefined;
     export let placeholder: string | undefined = "Click to set";
     export let ignoreKeyboardEvents: boolean = false;
-    export const required: boolean = false;
     export let edit = false;
     export let multiline = false;
 

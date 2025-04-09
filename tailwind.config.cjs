@@ -51,9 +51,6 @@ module.exports = {
 		}),
 		require('tailwind-scrollbar'),
 	],
-	experimental: {
-		optimizeUniversalDefaults: true,
-	},
 	future: {
 		hoverOnlyWhenSupported: true,
 	},

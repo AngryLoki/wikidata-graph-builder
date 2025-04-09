@@ -1,17 +1,16 @@
 <script lang="ts">
-    import type { HTMLAnchorAttributes } from "svelte/elements";
     import type { AutocompleteItem } from "./autocomplete-input";
+    import type { HTMLAnchorAttributes } from "svelte/elements";
 
-    interface $$Props extends HTMLAnchorAttributes {
+    interface Props extends HTMLAnchorAttributes {
         item: AutocompleteItem;
         active: boolean;
     }
 
-    export let item: AutocompleteItem;
-    export let active: boolean;
+    let { item, active, ...rest }: Props = $props();
 </script>
 
-<!-- svelte-ignore a11y-invalid-attribute -->
+<!-- svelte-ignore a11y_invalid_attribute -->
 <a
     href="#"
     target="_blank"
@@ -20,10 +19,10 @@
     {active ? 'bg-blue-900' : ''}"
     role="option"
     aria-selected={active}
-    on:mouseenter
-    on:mousedown|preventDefault={() => {}}
-    on:click|preventDefault
-    {...$$restProps}
+    onmousedown={(event) => {
+        event.preventDefault();
+    }}
+    {...rest}
 >
     <span
         class="block font-medium overflow-hidden text-ellipsis whitespace-nowrap

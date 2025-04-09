@@ -22,10 +22,10 @@ export function taphold(node: HTMLElement, handler: (event: MouseEvent | TouchEv
 
 		handler(event);
 
-		intervalId = globalThis.setTimeout(() => {
+		intervalId = (globalThis as unknown as Window).setTimeout(() => {
 			handler(event);
 
-			intervalId = globalThis.setInterval(() => {
+			intervalId = (globalThis as unknown as Window).setInterval(() => {
 				handler(event);
 			}, nextDelay);
 		}, firstDelay);

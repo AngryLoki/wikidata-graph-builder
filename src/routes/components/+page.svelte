@@ -33,6 +33,8 @@
     let option = "option1";
 
     let color = "#000000ff";
+
+    let checked = false;
 </script>
 
 <Heading2>Multiline edit fields</Heading2>
@@ -200,7 +202,10 @@ valueObject={JSON.stringify(itemValue)}</pre>
 />
 
 <Heading2>Checkbox</Heading2>
-<Checkbox label="Actions" />
+<Checkbox
+    bind:checked
+    label="Actions {checked ? 'is checked' : 'is not checked'}"
+/>
 
 <Heading2>Color picker</Heading2>
 <div class="flex">

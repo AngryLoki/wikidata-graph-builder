@@ -1,17 +1,18 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     import type { HTMLAttributes } from "svelte/elements";
 
-    interface $$Props extends HTMLAttributes<HTMLHeadingElement> {
+    interface Props extends HTMLAttributes<HTMLHeadingElement> {
         class?: string | undefined;
+        children?: Snippet;
     }
 
-    let cls = "";
-    export { cls as class };
+    let { class: cls = "", children, ...rest }: Props = $props();
 </script>
 
 <h2
     class="text-2xl leading-6 mt-4 font-medium text-gray-200 -tracking-[.01em] {cls}"
-    {...$$restProps}
+    {...rest}
 >
-    <slot />
+    {@render children?.()}
 </h2>

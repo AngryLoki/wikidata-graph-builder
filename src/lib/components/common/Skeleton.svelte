@@ -1,6 +1,9 @@
 <script lang="ts">
-    let cls = "";
-    export { cls as class };
+    interface Props {
+        class?: string;
+    }
+
+    let { class: cls = "" }: Props = $props();
 </script>
 
 <span

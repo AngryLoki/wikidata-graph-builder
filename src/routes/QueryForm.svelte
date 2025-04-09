@@ -127,7 +127,7 @@
         {#if property === "P31"}
             <Checkbox
                 label="Instance or subclass"
-                bind:value={instanceOrSubclass}
+                bind:checked={instanceOrSubclass}
             />
         {/if}
 

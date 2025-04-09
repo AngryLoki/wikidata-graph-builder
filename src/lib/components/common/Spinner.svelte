@@ -1,6 +1,9 @@
 <script lang="ts">
-	let cls: string | undefined = undefined;
-	export { cls as class };
+	interface Props {
+		class?: string | undefined;
+	}
+
+	let { class: cls = undefined }: Props = $props();
 </script>
 
 <div class="inline overflow-hidden {cls ?? 'w-6 h-6'}">
