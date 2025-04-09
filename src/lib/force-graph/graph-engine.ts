@@ -240,7 +240,7 @@ export class GraphEngine implements GraphEngineNotifier {
 
 	public pauseAnimation() {
 		if (this.animationFrameRequestId) {
-			window.cancelAnimationFrame(this.animationFrameRequestId);
+			globalThis.cancelAnimationFrame(this.animationFrameRequestId);
 			this.animationFrameRequestId = undefined;
 		}
 	}
@@ -580,8 +580,8 @@ const drawArrows = (
 		let endR: number;
 
 		if (link.sections) {
-			const p1 = link.sections.at(-2);
-			const p2 = link.sections.at(-1);
+			const p1 = link.sections.at(-2)!;
+			const p2 = link.sections.at(-1)!;
 			start = {x: p1[0], y: p1[1]};
 			end = {x: p2[0], y: p2[1]};
 			endR = 0;

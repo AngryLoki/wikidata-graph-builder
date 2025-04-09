@@ -25,7 +25,7 @@ export class Graph implements GraphNotifier {
 		const createCanvasNotifier = (self: GraphNotifier) => {
 			const worker = new GraphEngineWorker();
 
-			worker.addEventListener('message', (event: MessageEvent<any>) => {
+			worker.addEventListener('message', (event: MessageEvent) => {
 				const [method, ...arguments_] = event.data;
 				const f = (self as any)[method] as (...arguments_: any) => void;
 				f.bind(self)(...arguments_); // eslint-disable-line @typescript-eslint/no-unsafe-argument
@@ -73,7 +73,7 @@ export class Graph implements GraphNotifier {
 	private hoverNodeId: string | undefined;
 	private draggable = true;
 
-	private constructor(private canvas: HTMLCanvasElement, createCanvasNotifier: (self: GraphNotifier) => GraphEngineNotifier) {
+	private constructor(private readonly canvas: HTMLCanvasElement, createCanvasNotifier: (self: GraphNotifier) => GraphEngineNotifier) {
 		this.graphEngine = createCanvasNotifier(this);
 
 		let pointerPos = {x: -1e12, y: -1e12};

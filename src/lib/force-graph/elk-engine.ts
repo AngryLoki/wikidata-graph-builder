@@ -15,7 +15,7 @@ export class ElkEngine implements LayoutEngine {
 	private readonly api: ElkApi = new ElkApi();
 	private updateTracker: symbol | undefined;
 
-	constructor(private notifier: GraphEngineNotifier, public graphLayout: ElkDirection) {}
+	constructor(private readonly notifier: GraphEngineNotifier, public graphLayout: ElkDirection) {}
 
 	public setGraphData(graphData: SparqlGraphData) {
 		for (const node of graphData.nodes) {

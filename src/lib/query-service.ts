@@ -32,7 +32,7 @@ export class QueryService {
 		return QueryService.instances[endpointUrl];
 	}
 
-	private static instances: Record<string, QueryService> = {};
+	private static readonly instances: Record<string, QueryService> = {};
 
 	ask = makeChunkedFunction(async (queries: string[]) => this.askMany(queries), 50);
 

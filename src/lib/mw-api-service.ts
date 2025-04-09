@@ -23,7 +23,7 @@ export class MwApiService {
 		return MwApiService.instances[init.server];
 	}
 
-	private static instances: Record<string, MwApiService> = {};
+	private static readonly instances: Record<string, MwApiService> = {};
 
 	private readonly server: string;
 	private readonly apiEndpoint: string;

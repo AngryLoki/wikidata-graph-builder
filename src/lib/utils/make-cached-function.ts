@@ -1,7 +1,7 @@
 const isLocalStorageAvailable = () => {
 	let storage: Storage | undefined;
 	try {
-		storage = window.localStorage;
+		storage = globalThis.localStorage;
 		const x = '__storage_test__';
 		storage.setItem(x, x);
 		storage.removeItem(x);

@@ -43,7 +43,7 @@ export class ForceEngine implements LayoutEngine {
 	private cntTicks = 0;
 	private startTickTime = new Date();
 
-	constructor(private notifier: GraphEngineNotifier) {
+	constructor(private readonly notifier: GraphEngineNotifier) {
 		this.forceLayout.alphaDecay(1 - (0.001 ** (1 / 400)));
 		this.forceLayout.velocityDecay(0.1);
 	}
