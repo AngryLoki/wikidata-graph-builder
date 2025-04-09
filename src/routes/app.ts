@@ -57,6 +57,7 @@ export const parseUrlParameters = (parameters: URLSearchParams = new URLSearchPa
 	const limit = /^\d+$/.test(parameters.get('limit') ?? '')
 		? Number.parseInt(parameters.get('limit')!, 10)
 		: defaultLimit;
+	const instanceOrSubclass = parameters.get('instance_or_subclass') === '1';
 
 	const modeRaw = parameters.get('mode') ?? parameters.get('direction');
 	const mode
@@ -67,7 +68,7 @@ export const parseUrlParameters = (parameters: URLSearchParams = new URLSearchPa
 		: undefined;
 
 	const queryParameters: QueryParameters = {
-		property, item, language, iterations, limit, mode, wdqs, sizeProperty,
+		property, item, language, iterations, limit, mode, wdqs, sizeProperty, special: {instanceOrSubclass},
 	};
 
 	const shortcutsModeRaw = parameters.get('sc') as ShortcutsMode;
@@ -143,6 +144,10 @@ export const updateUrl = async (query: QueryParameters, vis: VisParameters, repl
 
 	if (vis.graphDirection !== defaultGraphLayout) {
 		parameters.append('graph_direction', vis.graphDirection);
+	}
+
+	if (query.special?.instanceOrSubclass) {
+		parameters.append('instance_or_subclass', '1');
 	}
 
 	await goto('?' + parameters.toString(), {replaceState});

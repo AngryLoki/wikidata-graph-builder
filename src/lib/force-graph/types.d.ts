@@ -54,6 +54,7 @@ export type LinkObject = {
 	source: NodeObject;
 	target: NodeObject;
 	isShortcut: boolean;
+	dashed?: boolean;
 	label?: string;
 	sections?: Array<[number, number]>;
 	indexColor: string;

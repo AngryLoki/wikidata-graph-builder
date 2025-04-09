@@ -9,6 +9,7 @@
     import NumberInput from "$lib/components/common/NumberInput.svelte";
     import Select from "$lib/components/common/Select.svelte";
     import Button from "$lib/components/common/Button.svelte";
+    import Checkbox from "$lib/components/common/Checkbox.svelte";
     import Field from "$lib/components/common/Field.svelte";
     import ItemEdit from "$lib/components/wikidata/ItemEdit.svelte";
     import ButtonsBox from "$lib/components/common/ButtonsBox.svelte";
@@ -37,6 +38,17 @@
     let wdqs: string | undefined;
     let sizeProperty: string | undefined;
     let sizePropertyObject: ValueItem | undefined;
+    let instanceOrSubclass = false;
+
+    $: if (property !== "P31") {
+        instanceOrSubclass = false;
+    }
+
+    $: if (instanceOrSubclass) {
+        iterations = undefined;
+        sizeProperty = undefined;
+        sizePropertyObject = undefined;
+    }
 
     const dispatch = createEventDispatcher();
 
@@ -53,6 +65,8 @@
             wdqs,
             sizeProperty,
         } = appParameters.queryParameters);
+        instanceOrSubclass =
+            appParameters.queryParameters.special?.instanceOrSubclass ?? false;
 
         // https://github.com/sveltejs/svelte/issues/4470
         // await tick();
@@ -68,6 +82,9 @@
         mode,
         wdqs,
         sizeProperty: sizePropertyObject?.id,
+        special: {
+            instanceOrSubclass,
+        },
     } as QueryParameters;
 
     $: isValid = queryParametersIsValid(formQueryParameters);
@@ -107,6 +124,13 @@
             />
         </Field>
 
+        {#if property === "P31"}
+            <Checkbox
+                label="Instance or subclass"
+                bind:value={instanceOrSubclass}
+            />
+        {/if}
+
         <Field label="Root item">
             <ItemEdit
                 bind:value={item}
@@ -116,24 +140,26 @@
             />
         </Field>
 
-        <Field label="Iterations">
-            <NumberInput
-                bind:value={iterations}
-                min={0}
-                max={100000}
-                placeholder="Unlimited"
-                treatZeroAsUndefined={true}
-            />
-        </Field>
+        {#if !instanceOrSubclass}
+            <Field label="Iterations">
+                <NumberInput
+                    bind:value={iterations}
+                    min={0}
+                    max={100000}
+                    placeholder="Unlimited"
+                    treatZeroAsUndefined={true}
+                />
+            </Field>
 
-        <Field label="Size property">
-            <ItemEdit
-                bind:value={sizeProperty}
-                bind:valueObject={sizePropertyObject}
-                type="property"
-                {language}
-            />
-        </Field>
+            <Field label="Size property">
+                <ItemEdit
+                    bind:value={sizeProperty}
+                    bind:valueObject={sizePropertyObject}
+                    type="property"
+                    {language}
+                />
+            </Field>
+        {/if}
     {/if}
 
     <ButtonsBox class="flex gap-2 pt-2">

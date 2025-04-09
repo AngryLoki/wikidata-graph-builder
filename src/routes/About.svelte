@@ -83,6 +83,20 @@ SERVICE wikibase:label {bd:serviceParam wikibase:language "en" }
             mode: "reverse",
             size_property: "P106",
         },
+        "Class tree for Statue of Liberty": {
+            property: "P31",
+            item: "Q9202",
+            mode: "forward",
+            graph_direction: "down",
+            instance_or_subclass: "1",
+        },
+        "Classification of finite simple groups": {
+            property: "P31",
+            item: "Q45033382",
+            mode: "reverse",
+            graph_direction: "down",
+            instance_or_subclass: "1",
+        },
     };
 </script>
 

@@ -115,6 +115,7 @@ export class SparqlGraphData {
 		for (const line of lines) {
 			const sourceId = line.item?.value;
 			const targetId = line.linkTo?.value;
+			const linkType = line.linkType?.value
 
 			if (!sourceId || !nodesMap.has(sourceId) || !targetId || !nodesMap.has(targetId)) {
 				continue;
@@ -126,6 +127,7 @@ export class SparqlGraphData {
 				target: nodesMap.get(targetId)!,
 				isShortcut: false,
 				indexColor: '',
+				dashed: linkType === 'instance',
 			};
 			link.indexColor = this.colorTracker.register({type: 'Link', object: link} as SearchObject)!;
 

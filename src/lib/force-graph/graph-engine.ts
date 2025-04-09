@@ -303,12 +303,12 @@ export class GraphEngine implements GraphEngineNotifier {
 		} else {
 			ctx.strokeStyle = this.linksColor;
 			ctx.lineWidth = this.linksWidth;
-			drawLinks(links, ctx, x => !x.isShortcut);
+			drawLinks(links, ctx, false);
 
 			if (this.shortcutsWidth !== 0) {
 				ctx.strokeStyle = this.shortcutsColor;
 				ctx.lineWidth = this.shortcutsWidth;
-				drawLinks(links, ctx, x => x.isShortcut);
+				drawLinks(links, ctx, true);
 			}
 		}
 
@@ -523,29 +523,41 @@ export class GraphEngine implements GraphEngineNotifier {
 const drawLinks = (
 	links: Iterable<LinkObject>,
 	ctx: CanvasContext,
-	filter: ((links: LinkObject) => boolean) | undefined = undefined,
+	shortcutFilter?: boolean,
 ) => {
-	ctx.beginPath();
-
-	for (const link of links) {
-		if (filter && !filter(link)) {
-			continue;
+	for (const drawDashed of [true, false]) {
+		if (drawDashed) {
+			ctx.setLineDash(shortcutFilter ? [7, 3] : [3.5, 1.5]);
 		}
 
-		if (link.sections) {
-			ctx.moveTo(link.sections[0][0], link.sections[0][1]);
-			for (let i = 1; i < link.sections.length; i++) {
-				ctx.lineTo(link.sections[i][0], link.sections[i][1]);
+		for (const link of links) {
+			if (shortcutFilter !== undefined && shortcutFilter !== link.isShortcut) {
+				continue;
 			}
-		} else {
-			const source = link.source;
-			const target = link.target;
-			ctx.moveTo(source.x!, source.y!);
-			ctx.lineTo(target.x!, target.y!);
-		}
-	}
 
-	ctx.stroke();
+			if (Boolean(link.dashed) !== drawDashed) {
+				continue;
+			}
+
+			ctx.beginPath();
+
+			if (link.sections) {
+				ctx.moveTo(link.sections[0][0], link.sections[0][1]);
+				for (let i = 1; i < link.sections.length; i++) {
+					ctx.lineTo(link.sections[i][0], link.sections[i][1]);
+				}
+			} else {
+				const source = link.source;
+				const target = link.target;
+				ctx.moveTo(source.x!, source.y!);
+				ctx.lineTo(target.x!, target.y!);
+			}
+
+			ctx.stroke();
+		}
+
+		ctx.setLineDash([]);
+	}
 };
 
 const drawArrows = (
