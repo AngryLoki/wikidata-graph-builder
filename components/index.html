@@ -2,26 +2,36 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="/wikidata-graph-builder/favicon.png" />
+		<link rel="icon" href="../favicon.png" />
 		<meta name="viewport" content="width=device-width" />
-		<meta http-equiv="content-security-policy" content="">
-		<link rel="modulepreload" href="/wikidata-graph-builder/internal/immutable/start-dbedf66e.js">
-		<link rel="modulepreload" href="/wikidata-graph-builder/internal/immutable/chunks/index-04c8a6d0.js">
-		<link rel="modulepreload" href="/wikidata-graph-builder/internal/immutable/chunks/singletons-1dd5363d.js">
-		<link rel="modulepreload" href="/wikidata-graph-builder/internal/immutable/chunks/index-7838a8a2.js">
-		<link rel="modulepreload" href="/wikidata-graph-builder/internal/immutable/chunks/preload-helper-41c905a7.js">
+		
+		<link rel="modulepreload" href="../internal/immutable/entry/start.8948aeb0.js">
+		<link rel="modulepreload" href="../internal/immutable/chunks/index.b3aeaf36.js">
+		<link rel="modulepreload" href="../internal/immutable/chunks/singletons.067f129b.js">
+		<link rel="modulepreload" href="../internal/immutable/chunks/index.f248012a.js">
+		<link rel="modulepreload" href="../internal/immutable/entry/app.344fe720.js">
+		<link rel="modulepreload" href="../internal/immutable/chunks/preload-helper.a4192956.js">
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">
-		<script type="module" data-sveltekit-hydrate="45h">
-			import { start } from "/wikidata-graph-builder/internal/immutable/start-dbedf66e.js";
+			<script>
+				{
+					__sveltekit_f0oo64 = {
+						assets: "/wikidata-graph-builder",
+						base: new URL("..", location).pathname.slice(0, -1),
+						env: {}
+					};
 
-			start({
-				env: {},
-				paths: {"assets":"/wikidata-graph-builder","base":"/wikidata-graph-builder"},
-				target: document.querySelector('[data-sveltekit-hydrate="45h"]').parentNode,
-				version: "1675694957429"
-			});
-		</script></div>
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../internal/immutable/entry/start.8948aeb0.js"),
+						import("../internal/immutable/entry/app.344fe720.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+				}
+			</script>
+		</div>
 	</body>
 </html>
