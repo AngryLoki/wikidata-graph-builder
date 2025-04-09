@@ -86,7 +86,6 @@
         aria-labelledby="label-{id}"
     >
         {#each links as { link, text }, idx}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <a
                 bind:this={itemRefs[idx]}
                 target="_blank"

@@ -171,8 +171,8 @@
         on:keydown={onDropdownKeyDown}
     >
         {#each keys as key, idx}
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <!-- svelte-ignore a11y-interactive-supports-focus -->
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div
                 bind:this={optionRefs[idx]}
                 id="option-{id}-{idx}"

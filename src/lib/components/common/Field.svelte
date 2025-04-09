@@ -20,7 +20,7 @@
 </script>
 
 <div class={cls}>
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
     <label
         for={id}
         class="px-1 border-transparent border-[1.99px] text-sm text-white/50 mb-0.5 font-bold"

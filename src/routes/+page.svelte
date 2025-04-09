@@ -51,7 +51,7 @@
 
 <div class="h-screen max-h-screen md:flex">
     <button
-        class="absolute top-6 left-0 bg-gray-800/90 w-16 h-16 md:hidden 
+        class="absolute top-6 left-0 bg-gray-800/90 w-16 h-16 md:hidden
         flex items-center justify-center rounded-r-lg z-10
         {drawerVisible ? 'hidden' : ''}"
         on:click={() => {
@@ -63,6 +63,9 @@
 
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div
+        role="button"
+        aria-label="Close menu"
+        tabindex="0"
         class="absolute inset-0 bg-gray-900/80 md:hidden z-10
         {drawerVisible ? '' : 'hidden'}"
         on:click={() => {

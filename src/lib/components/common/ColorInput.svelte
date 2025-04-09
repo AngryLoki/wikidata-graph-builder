@@ -47,7 +47,6 @@
 </script>
 
 <Dropdown {dropdownVisible} grow={false} {placement}>
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<button
 		slot="trigger"
 		let:floatingRef

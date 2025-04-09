@@ -71,6 +71,9 @@
 </script>
 
 <div
+    role="textbox"
+    aria-multiline="true"
+    tabindex="0"
     contenteditable="true"
     class="{cls} break-words [word-break:break-word] whitespace-pre-wrap"
     on:keydown={onKeyDown}
