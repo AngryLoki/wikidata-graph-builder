@@ -1,7 +1,7 @@
 <script lang="ts">
     import IconEx from "./IconEx.svelte";
     import MultilineField from "./MultilineField.svelte";
-    import { mdiAlertCircleOutline, mdiPencil } from "@mdi/js";
+    import { mdiAlertCircleOutline } from "@mdi/js";
     import { createEventDispatcher, tick } from "svelte";
     import { useActions } from "svelte-useactions";
     import type { ActionList } from "svelte-useactions";
@@ -10,6 +10,7 @@
     import { getid } from "./utils";
 
     interface $$Props extends HTMLTextareaAttributes {
+        autocorrect?: "on" | "off" | "" | undefined | null;
         value?: string | undefined;
         ignoreKeyboardEvents?: boolean;
         use?: ActionList<HTMLOutputElement>;
@@ -170,7 +171,11 @@
                 <slot>{value + "\n"}</slot>
             {/if}
         </div>
-        <button tabindex="-1" class="block min-w-[1rem] grow cursor-text">
+        <button
+            aria-label="Edit"
+            tabindex="-1"
+            class="block min-w-[1rem] grow cursor-text"
+        >
             &nbsp;
         </button>
     {/if}

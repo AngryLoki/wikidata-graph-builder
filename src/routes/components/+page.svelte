@@ -14,6 +14,7 @@
     import Checkbox from "$lib/components/common/Checkbox.svelte";
     import ColorInput from "$lib/components/common/ColorInput.svelte";
     import Spinner from "$lib/components/common/Spinner.svelte";
+    import ColorPicker from "$lib/components/common/color-picker/ColorPicker.svelte";
 
     let value: string | undefined =
         "xxx     xxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
@@ -202,8 +203,12 @@ valueObject={JSON.stringify(itemValue)}</pre>
 <Checkbox label="Actions" />
 
 <Heading2>Color picker</Heading2>
-<ColorInput bind:value={color} />
-{color}
+<div class="flex">
+    <ColorInput class="w-1/3" bind:value={color} />
+
+    <ColorPicker class="w-1/3" slot="dropdown" bind:hex={color} tabindex={0} />
+    <div class="w-1/3">{color}</div>
+</div>
 
 <Heading2>Loading</Heading2>
 <Spinner />

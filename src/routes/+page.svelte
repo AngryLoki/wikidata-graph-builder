@@ -61,7 +61,7 @@
         <IconEx path={mdiMenu} class="w-12 h-12 fill-white/80" />
     </button>
 
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
     <div
         role="button"
         aria-label="Close menu"
@@ -71,7 +71,7 @@
         on:click={() => {
             drawerVisible = false;
         }}
-    />
+    ></div>
 
     <div
         class="w-72 flex-none shadow-lg bg-gray-800/90 md:bg-gray-800 overflow-y-auto absolute left-0 top-0 bottom-0 md:static

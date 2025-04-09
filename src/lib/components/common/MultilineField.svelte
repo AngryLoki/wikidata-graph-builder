@@ -50,7 +50,7 @@
 			"width",
 			`${
 				Number.parseFloat(cs.width) - inlinePadding - inlineBorderWidth
-			}px`
+			}px`,
 		);
 		element.style.setProperty("box-sizing", "content-box");
 		element.style.setProperty("padding-inline", "0");
@@ -108,7 +108,7 @@
 	on:blur
 	on:input
 	on:keydown
-/>
+></textarea>
 
 <style>
 	textarea {

@@ -52,7 +52,7 @@
         {$isDragging ? 'cursor-grabbing' : $isHover ? 'cursor-pointer' : ''}"
         bind:clientWidth={width}
         bind:clientHeight={height}
-    />
+    ></canvas>
     <div
         class="absolute p-1 rounded-sm text-gray-100 bg-black/60 text-center"
         style={tooltipStyle}
@@ -67,7 +67,7 @@
     {/if}
 
     {#if $state === "error"}
-        <div class="absolute inset-0 flex items-center justify-center ">
+        <div class="absolute inset-0 flex items-center justify-center">
             <div
                 class="flex p-4 mx-4 text-sm rounded bg-gray-800 text-red-400 items-center"
                 role="alert"

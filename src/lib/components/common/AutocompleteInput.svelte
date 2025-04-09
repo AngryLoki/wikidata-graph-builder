@@ -44,7 +44,7 @@
 
     const onValueUpdate = async (
         value: string | undefined,
-        resolve: ResolveFunction
+        resolve: ResolveFunction,
     ) => {
         if (value === undefined) {
             valueObject = undefined;
@@ -171,7 +171,7 @@
             abortController = new AbortController();
             ({ autocompleteItems, loadMore } = await autocomplete(
                 fieldValue,
-                abortController.signal
+                abortController.signal,
             ));
             activeAutocompleteItem = 0;
         } catch (error_: unknown) {
@@ -207,7 +207,7 @@
         abortController = new AbortController();
         try {
             ({ autocompleteItems: newAutocompleteItems, loadMore } = await load(
-                abortController.signal
+                abortController.signal,
             ));
         } catch (error_: unknown) {
             if ((error_ as Error).name !== "AbortError") {
@@ -219,11 +219,11 @@
         }
 
         const existingItems = new Set(
-            autocompleteItems!.map((item) => item.value.id)
+            autocompleteItems!.map((item) => item.value.id),
         );
 
         newAutocompleteItems = newAutocompleteItems.filter(
-            (item) => !existingItems.has(item.value.id)
+            (item) => !existingItems.has(item.value.id),
         );
 
         const originalScroll = dropdownRef.getScrollTop();
@@ -299,7 +299,7 @@
                     <div
                         bind:this={loadMoreAreaRef}
                         class="h-16 absolute bottom-0 left-0 right-0 pointer-events-none"
-                    />
+                    ></div>
                 </IntersectionObserver>
 
                 {#each autocompleteItems as item, idx (item.value.id)}

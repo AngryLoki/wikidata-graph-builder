@@ -69,7 +69,7 @@
 				? 'h-3.5 w-3.5'
 				: 'h-4 w-full'} rounded-sm border-[1.99px] border-gray-700"
 			style="background-color: {editValue}"
-		/>
+		></div>
 		{#if label !== undefined}
 			<div class="ml-2">{label}</div>
 		{/if}

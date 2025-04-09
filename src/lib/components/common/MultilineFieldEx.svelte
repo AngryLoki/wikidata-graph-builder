@@ -87,4 +87,4 @@
     on:keydown
     bind:textContent={value}
     bind:this={element}
-/>
+></div>
