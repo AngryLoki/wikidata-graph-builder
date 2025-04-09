@@ -83,7 +83,7 @@ export class GraphEngine implements GraphEngineNotifier {
 			this.shadowCanvas = new OffscreenCanvas(canvas.width, canvas.height);
 		}
 
-		this.ctx = this.canvas.getContext('2d', {alpha: false}) as CanvasContext;
+		this.ctx = this.canvas.getContext('2d', {alpha: false})! as CanvasContext;
 		this.shadowCtx = this.shadowCanvas.getContext('2d', {willReadFrequently: true, alpha: false})! as CanvasContext;
 
 		this.animate();
