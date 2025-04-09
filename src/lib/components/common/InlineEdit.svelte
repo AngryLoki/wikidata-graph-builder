@@ -114,11 +114,13 @@
     };
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
 <output
     role="button"
     use:useActions={use}
-    class="flex items-stretch w-full transition-all rounded-sm border-[1.99px] cursor-text
+    class="flex items-stretch transition-all rounded-sm border-[1.99px] cursor-text
     text-gray-200 selection:text-gray-200 selection:bg-blue-600/60
+    {/\bw-/.test(cls ?? '') ? '' : 'w-full'}
     {edit
         ? 'bg-gray-950 focus-within:bg-black hover:focus-within:bg-black ' +
           (invalid ? 'border-red-500' : 'border-gray-300/5')

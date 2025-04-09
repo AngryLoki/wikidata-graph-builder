@@ -2,7 +2,9 @@ import {zoom as d3Zoom, zoomTransform as d3ZoomTransform, type D3ZoomEvent} from
 import {select as d3Select, type Selection} from 'd3-selection';
 import {drag as d3Drag, type D3DragEvent} from 'd3-drag';
 import {writable} from 'svelte/store';
-import type {GraphEngineNotifier, GraphNotifier, GraphState, Point, VisParameters} from './types';
+import type {
+	GraphEngineNotifier, GraphNotifier, GraphState, Point, VisParameters,
+} from './types';
 
 const zoom2NodesFactor = 4;
 
@@ -23,24 +25,24 @@ export class Graph implements GraphNotifier {
 		const createCanvasNotifier = (self: GraphNotifier) => {
 			const worker = new GraphEngineWorker();
 
-			worker.addEventListener('message', event => {
-				const [method, ...args] = event.data;
-				const f = (self as any)[method] as (...args: any) => void;
-				f.bind(self)(...args);
+			worker.addEventListener('message', (event: MessageEvent<any>) => {
+				const [method, ...arguments_] = event.data;
+				const f = (self as any)[method] as (...arguments_: any) => void;
+				f.bind(self)(...arguments_); // eslint-disable-line @typescript-eslint/no-unsafe-argument
 			});
 
 			const shadowCanvas = canvas.transferControlToOffscreen();
 			worker.postMessage(['init', shadowCanvas, visParameters], [shadowCanvas]);
 
 			const proxy = new Proxy<GraphEngineNotifier>({} as unknown as GraphEngineNotifier, {
-				get(_target, prop, _receiver) {
-					return (...args: any) => {
-						if (prop === 'destroy') {
+				get(_target, property, _receiver) {
+					return (...arguments_: any) => {
+						if (property === 'destroy') {
 							worker.terminate();
 							return;
 						}
 
-						worker.postMessage([prop, ...args]);
+						worker.postMessage([property, ...arguments_]);
 					};
 				},
 			});
@@ -71,7 +73,7 @@ export class Graph implements GraphNotifier {
 	private hoverNodeId: string | undefined;
 	private draggable = true;
 
-	private constructor(private readonly canvas: HTMLCanvasElement, createCanvasNotifier: (self: GraphNotifier) => GraphEngineNotifier) {
+	private constructor(private canvas: HTMLCanvasElement, createCanvasNotifier: (self: GraphNotifier) => GraphEngineNotifier) {
 		this.graphEngine = createCanvasNotifier(this);
 
 		let pointerPos = {x: -1e12, y: -1e12};
@@ -79,29 +81,29 @@ export class Graph implements GraphNotifier {
 		this.d3Canvas = d3Select(this.canvas);
 
 		this.zoomBehavior
-			.on('zoom', (ev: D3ZoomEvent<HTMLCanvasElement, unknown>) => {
-				this.graphEngine.onZoomTransform({x: ev.transform.x, y: ev.transform.y, k: ev.transform.k});
+			.on('zoom', (event: D3ZoomEvent<HTMLCanvasElement, unknown>) => {
+				this.graphEngine.onZoomTransform({x: event.transform.x, y: event.transform.y, k: event.transform.k});
 			})
-			.on('end', (_ev: D3ZoomEvent<HTMLCanvasElement, unknown>) => {
+			.on('end', (_event: D3ZoomEvent<HTMLCanvasElement, unknown>) => {
 				this.graphEngine.onZoomTransformEnd();
 			});
 
 		const dragSubject = () => this.draggable ? this.hoverNodeId : undefined;
 
-		const onDragStart = (ev: D3DragEvent<HTMLCanvasElement, unknown, string>) => {
+		const onDragStart = (event: D3DragEvent<HTMLCanvasElement, unknown, string>) => {
 			this.isDragging.set(true);
-			const nodeId = ev.subject;
-			this.graphEngine.onDragStart(nodeId, ev.active);
+			const nodeId = event.subject;
+			this.graphEngine.onDragStart(nodeId, event.active);
 		};
 
-		const onDrag = (ev: D3DragEvent<HTMLCanvasElement, unknown, string>) => {
-			const nodeId = ev.subject;
-			const [x, y] = d3ZoomTransform(this.canvas).invert([ev.x, ev.y]);
+		const onDrag = (event: D3DragEvent<HTMLCanvasElement, unknown, string>) => {
+			const nodeId = event.subject;
+			const [x, y] = d3ZoomTransform(this.canvas).invert([event.x, event.y]);
 			this.graphEngine.onDrag(nodeId, {x, y});
 		};
 
-		const onDragEnd = (ev: D3DragEvent<HTMLCanvasElement, unknown, string>) => {
-			const nodeId = ev.subject;
+		const onDragEnd = (event: D3DragEvent<HTMLCanvasElement, unknown, string>) => {
+			const nodeId = event.subject;
 			this.isDragging.set(false);
 			this.graphEngine.onDragEnd(nodeId);
 		};
@@ -118,8 +120,8 @@ export class Graph implements GraphNotifier {
 		this.adjustCanvasSize();
 
 		// Capture pointer coords on move or touchstart
-		const listener = (ev: PointerEvent) => {
-			if (ev.type === 'pointerdown') {
+		const listener = (event: PointerEvent) => {
+			if (event.type === 'pointerdown') {
 				this.graphEngine.onPointerDown();
 			}
 
@@ -127,7 +129,7 @@ export class Graph implements GraphNotifier {
 			const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 			const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 			const offset = {top: rect.top + scrollTop, left: rect.left + scrollLeft};
-			pointerPos = {x: ev.pageX - offset.left, y: ev.pageY - offset.top};
+			pointerPos = {x: event.pageX - offset.left, y: event.pageY - offset.top};
 			this.pointerPos.set(pointerPos);
 			this.graphEngine.setPointerPos(pointerPos);
 		};
@@ -136,8 +138,8 @@ export class Graph implements GraphNotifier {
 		canvas.addEventListener('pointerdown', listener, {passive: true});
 
 		// Handle click/touch events on nodes/links
-		canvas.addEventListener('pointerup', ev => {
-			this.graphEngine.onPointerUp(ev.button);
+		canvas.addEventListener('pointerup', event => {
+			this.graphEngine.onPointerUp(event.button);
 		}, {passive: true});
 	}
 

@@ -7,20 +7,18 @@ class ApiError extends Error {
 	}
 }
 
-type FetchFn = (info: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
+type FetchFunction = (info: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
 type WdQueryParameters = Record<string, string[] | string | number | boolean>;
 
 export type QueryServiceInit = {
 	server: string;
 	apiEndpoint?: string;
-	fetch?: FetchFn;
+	fetch?: FetchFunction;
 };
 
 export class MwApiService {
 	public static getInstance(init: QueryServiceInit): MwApiService {
-		if (!MwApiService.instances[init.server]) {
-			MwApiService.instances[init.server] = new MwApiService(init);
-		}
+		MwApiService.instances[init.server] ||= new MwApiService(init);
 
 		return MwApiService.instances[init.server];
 	}
@@ -29,12 +27,12 @@ export class MwApiService {
 
 	private readonly server: string;
 	private readonly apiEndpoint: string;
-	private readonly fetch: FetchFn;
+	private readonly fetch: FetchFunction;
 
 	private constructor(init: QueryServiceInit) {
 		this.server = init.server;
 		this.apiEndpoint = init.apiEndpoint ?? '/w/api.php';
-		this.fetch = init.fetch ?? (async (...args) => fetch(...args));
+		this.fetch = init.fetch ?? (async (...arguments_) => fetch(...arguments_));
 	}
 
 	async getEntityData(entityId: string) {

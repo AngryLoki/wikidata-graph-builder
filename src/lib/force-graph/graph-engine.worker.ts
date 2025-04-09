@@ -1,23 +1,25 @@
 import {GraphEngine} from './graph-engine';
-import type {GraphNotifier} from './types';
+import type {Canvas, GraphNotifier, VisParameters} from './types';
 
 const graphNotifier = new Proxy<GraphNotifier>({} as unknown as GraphNotifier, {
-	get(_target, prop, _receiver) {
-		return (...args: any) => {
-			postMessage([prop, ...args]);
+	get(_target, property, _receiver) {
+		return (...arguments_: any) => {
+			postMessage([property, ...arguments_]);
 		};
 	},
 });
 
 let graphEngine: GraphEngine;
 
-onmessage = ({data}) => {
-	const [method, ...args] = data;
+type WorkerMessage = ['init', Canvas, VisParameters];
+
+onmessage = ({data}: MessageEvent<WorkerMessage>) => {
+	const [method, ...arguments_] = data;
 
 	if (method === 'init') {
-		graphEngine = new GraphEngine(args[0], args[1], graphNotifier);
+		graphEngine = new GraphEngine(arguments_[0], arguments_[1], graphNotifier);
 	} else {
-		const f = (graphEngine as any)[method] as (...args: any) => void;
-		f.bind(graphEngine)(...args);
+		const f = (graphEngine as any)[method] as (...arguments_: any) => void;
+		f.bind(graphEngine)(...arguments_);
 	}
 };

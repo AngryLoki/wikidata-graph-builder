@@ -27,7 +27,7 @@
     let zeroValue = 0;
 
     const options: Record<string, string> = Object.fromEntries(
-        Array.from(Array(100), (_, i) => [`option${i + 1}`, `Option ${i + 1}`])
+        Array.from(Array(100), (_, i) => [`option${i + 1}`, `Option ${i + 1}`]),
     );
     let option = "option1";
 
@@ -93,11 +93,21 @@
 <InlineEdit placeholder="I am empty!" />
 
 <Heading2>Item edit fields</Heading2>
-<div class="md:flex flex-row gap-2">
+<div class="md:flex w-full flex-row gap-2">
     <InlineEdit bind:value={language} class="w-14 flex-none" />
-    <ItemEdit type="item" bind:value={item} bind:valueObject={itemValue} />
-    <ItemEdit type="item" bind:value={item} bind:valueObject={itemValue} />
-    <ItemEdit type="item" bind:value={item} {language} />
+    <ItemEdit
+        class="grow"
+        type="item"
+        bind:value={item}
+        bind:valueObject={itemValue}
+    />
+    <ItemEdit
+        class="grow"
+        type="item"
+        bind:value={item}
+        bind:valueObject={itemValue}
+    />
+    <ItemEdit class="grow" type="item" bind:value={item} {language} />
 </div>
 <pre class="whitespace-pre-wrap overflow-y-auto">value={item}
 valueObject={JSON.stringify(itemValue)}</pre>

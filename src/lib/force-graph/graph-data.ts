@@ -1,7 +1,9 @@
 import {scaleLinear} from 'd3-scale';
 import escape from 'lodash.escape';
 import ColorTracker from 'canvas-color-tracker';
-import type {Canvas, CanvasContext, LinkObject, NodeObject, SearchObject, ShortcutsMode} from './types';
+import type {
+	Canvas, CanvasContext, LinkObject, NodeObject, SearchObject, ShortcutsMode,
+} from './types';
 import {QueryService, type QueryResponseBinding} from '$lib/query-service';
 
 class TextMeasurer {
@@ -48,7 +50,7 @@ export class SparqlGraphData {
 	}
 
 	public lookup(color: Uint8ClampedArray) {
-		return this.colorTracker.lookup(color as any) as SearchObject ?? undefined;
+		return this.colorTracker.lookup(color as any as string | [number, number, number]) as SearchObject ?? undefined;
 	}
 
 	public async loadFromSparql(query: string, rootNodeId: string | undefined, abortSignal: AbortSignal) {
@@ -115,7 +117,7 @@ export class SparqlGraphData {
 		for (const line of lines) {
 			const sourceId = line.item?.value;
 			const targetId = line.linkTo?.value;
-			const linkType = line.linkType?.value
+			const linkType = line.linkType?.value;
 
 			if (!sourceId || !nodesMap.has(sourceId) || !targetId || !nodesMap.has(targetId)) {
 				continue;

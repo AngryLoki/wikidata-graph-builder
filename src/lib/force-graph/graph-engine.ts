@@ -3,7 +3,9 @@
 import {ForceEngine} from './force-engine';
 import {ElkEngine} from './elk-engine';
 import {SparqlGraphData} from './graph-data';
-import type {Canvas, CanvasContext, GraphLayout, GraphEngineNotifier, LayoutEngine, LinkObject, NodeObject, Point, SearchObject, ShortcutsMode, VisParameters, GraphNotifier, ElkDirection} from './types';
+import type {
+	Canvas, CanvasContext, GraphLayout, GraphEngineNotifier, LayoutEngine, LinkObject, NodeObject, Point, SearchObject, ShortcutsMode, VisParameters, GraphNotifier, ElkDirection,
+} from './types';
 
 type DragObject = NodeObject & {
 	__initialDragPos?: {x: number; y: number; fx: number | undefined; fy: number | undefined};
@@ -90,10 +92,10 @@ export class GraphEngine implements GraphEngineNotifier {
 	public onZoomTransform(t: ZoomSettings) {
 		this.isZoomDragging = true;
 
-		for (const ctx of [this.ctx, this.shadowCtx]) {
-			ctx.setTransform(this.devicePixelRatio, 0, 0, this.devicePixelRatio, 0, 0);
-			ctx.translate(t.x, t.y);
-			ctx.scale(t.k, t.k);
+		for (const context of [this.ctx, this.shadowCtx]) {
+			context.setTransform(this.devicePixelRatio, 0, 0, this.devicePixelRatio, 0, 0);
+			context.translate(t.x, t.y);
+			context.scale(t.k, t.k);
 		}
 
 		this.needsRedraw = true;
@@ -153,7 +155,9 @@ export class GraphEngine implements GraphEngineNotifier {
 
 	public onDragStart(nodeId: string, active: number) {
 		const node = this.graphData.nodesMap.get(nodeId)! as DragObject;
-		node.__initialDragPos = {x: node.x, y: node.y, fx: node.fx, fy: node.fy};
+		node.__initialDragPos = {
+			x: node.x, y: node.y, fx: node.fx, fy: node.fy,
+		};
 
 		// Keep engine running at low intensity throughout drag
 		if (!active) {
@@ -212,11 +216,11 @@ export class GraphEngine implements GraphEngineNotifier {
 
 	public adjustCanvasSize(width: number, height: number, devicePixelRatio: number) {
 		this.devicePixelRatio = devicePixelRatio;
-		let curWidth = this.canvas.width;
-		let curHeight = this.canvas.height;
-		if (curWidth === 300 && curHeight === 150) {
-			curWidth = 0;
-			curHeight = 0;
+		let currentWidth = this.canvas.width;
+		let currentHeight = this.canvas.height;
+		if (currentWidth === 300 && currentHeight === 150) {
+			currentWidth = 0;
+			currentHeight = 0;
 		}
 
 		// Resize canvases
@@ -226,7 +230,7 @@ export class GraphEngine implements GraphEngineNotifier {
 			canvas.height = height * devicePixelRatio;
 
 			// Normalize coordinate system to use css pixels (on init only)
-			if (!curWidth && !curHeight) {
+			if (!currentWidth && !currentHeight) {
 				this.ctx.scale(devicePixelRatio, devicePixelRatio);
 			}
 		}
@@ -252,17 +256,17 @@ export class GraphEngine implements GraphEngineNotifier {
 		this.pauseAnimation();
 	}
 
-	private clearCanvas(ctx: CanvasContext, color = '#000000') {
-		ctx.save();
-		ctx.setTransform(this.devicePixelRatio, 0, 0, this.devicePixelRatio, 0, 0);
+	private clearCanvas(context: CanvasContext, color = '#000000') {
+		context.save();
+		context.setTransform(this.devicePixelRatio, 0, 0, this.devicePixelRatio, 0, 0);
 		if (color === '#000000') {
-			ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		} else {
-			ctx.fillStyle = color;
-			ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+			context.fillStyle = color;
+			context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 		}
 
-		ctx.restore(); // Restore transforms
+		context.restore(); // Restore transforms
 	}
 
 	private abort() {
@@ -291,37 +295,37 @@ export class GraphEngine implements GraphEngineNotifier {
 
 	// eslint-disable-next-line complexity
 	private paintCanvas() {
-		const ctx = this.ctx;
+		const context = this.ctx;
 		const isPoint = this.graphData.nodes[0]?.shape === 'point';
 
 		// Draw links
 		const links = this.graphData.viewLinks;
 		if (this.shortcutsColor === this.linksColor && this.shortcutsWidth === this.linksWidth) {
-			ctx.strokeStyle = this.linksColor;
-			ctx.lineWidth = this.linksWidth;
-			drawLinks(links, ctx);
+			context.strokeStyle = this.linksColor;
+			context.lineWidth = this.linksWidth;
+			drawLinks(links, context);
 		} else {
-			ctx.strokeStyle = this.linksColor;
-			ctx.lineWidth = this.linksWidth;
-			drawLinks(links, ctx, false);
+			context.strokeStyle = this.linksColor;
+			context.lineWidth = this.linksWidth;
+			drawLinks(links, context, false);
 
 			if (this.shortcutsWidth !== 0) {
-				ctx.strokeStyle = this.shortcutsColor;
-				ctx.lineWidth = this.shortcutsWidth;
-				drawLinks(links, ctx, true);
+				context.strokeStyle = this.shortcutsColor;
+				context.lineWidth = this.shortcutsWidth;
+				drawLinks(links, context, true);
 			}
 		}
 
 		if (this.forwardLinks.size > 0) {
-			ctx.strokeStyle = this.forwardHighlightColor;
-			ctx.lineWidth = this.highlightLinksWidth;
-			drawLinks(this.forwardLinks, ctx);
+			context.strokeStyle = this.forwardHighlightColor;
+			context.lineWidth = this.highlightLinksWidth;
+			drawLinks(this.forwardLinks, context);
 		}
 
 		if (this.reverseLinks.size > 0) {
-			ctx.strokeStyle = this.reverseHighlightColor;
-			ctx.lineWidth = this.highlightLinksWidth;
-			drawLinks(this.reverseLinks, ctx);
+			context.strokeStyle = this.reverseHighlightColor;
+			context.lineWidth = this.highlightLinksWidth;
+			drawLinks(this.reverseLinks, context);
 		}
 
 		// Draw arrows
@@ -331,75 +335,75 @@ export class GraphEngine implements GraphEngineNotifier {
 
 		if (this.shortcutsColor === this.linksColor && this.shortcutsWidth === this.linksWidth) {
 			const arrowsFilter = this.shortcutsWidth === 0 ? ((link: LinkObject) => !link.isShortcut) : undefined;
-			drawArrows(links, arrowsSize, ctx, arrowsFilter);
+			drawArrows(links, arrowsSize, context, arrowsFilter);
 		} else {
-			ctx.strokeStyle = this.linksColor;
-			drawArrows(links, arrowsSize, ctx, link => !link.isShortcut);
+			context.strokeStyle = this.linksColor;
+			drawArrows(links, arrowsSize, context, link => !link.isShortcut);
 
 			if (this.shortcutsWidth !== 0) {
-				ctx.fillStyle = this.shortcutsColor;
-				drawArrows(links, shortcutsArrowsSize, ctx, link => link.isShortcut);
+				context.fillStyle = this.shortcutsColor;
+				drawArrows(links, shortcutsArrowsSize, context, link => link.isShortcut);
 			}
 		}
 
 		// Draw nodes
 		const nodes = this.graphData.nodes as DrawNode[];
 
-		ctx.strokeStyle = '#000000';
-		ctx.lineWidth = this.nodeLineWidth;
-		ctx.fillStyle = isPoint ? this.pointFill : this.blockFill;
-		drawNodes(nodes, ctx);
+		context.strokeStyle = '#000000';
+		context.lineWidth = this.nodeLineWidth;
+		context.fillStyle = isPoint ? this.pointFill : this.blockFill;
+		drawNodes(nodes, context);
 
 		const rootNode = this.graphData.rootNode as DrawNode;
 		if (rootNode) {
-			ctx.strokeStyle = '#000000';
-			ctx.lineWidth = this.nodeLineWidth;
-			ctx.fillStyle = isPoint ? this.rootNodePointFill : this.rootNodeBlockFill;
-			drawNodes([rootNode], ctx);
+			context.strokeStyle = '#000000';
+			context.lineWidth = this.nodeLineWidth;
+			context.fillStyle = isPoint ? this.rootNodePointFill : this.rootNodeBlockFill;
+			drawNodes([rootNode], context);
 		}
 
 		if (this.forwardNodes.size > 0) {
-			ctx.fillStyle = this.forwardHighlightColor;
-			ctx.lineWidth = 5;
-			ctx.strokeStyle = this.forwardHighlightColor;
-			drawNodes(this.forwardNodes as Iterable<DrawNode>, ctx);
+			context.fillStyle = this.forwardHighlightColor;
+			context.lineWidth = 5;
+			context.strokeStyle = this.forwardHighlightColor;
+			drawNodes(this.forwardNodes as Iterable<DrawNode>, context);
 		}
 
 		if (this.reverseNodes.size > 0) {
-			ctx.fillStyle = this.reverseHighlightColor;
-			ctx.lineWidth = 5;
-			ctx.strokeStyle = this.reverseHighlightColor;
-			drawNodes(this.reverseNodes as Iterable<DrawNode>, ctx);
+			context.fillStyle = this.reverseHighlightColor;
+			context.lineWidth = 5;
+			context.strokeStyle = this.reverseHighlightColor;
+			drawNodes(this.reverseNodes as Iterable<DrawNode>, context);
 		}
 
 		if (this.hoverNode) {
-			ctx.strokeStyle = '#40404050';
-			ctx.lineWidth = 5;
-			ctx.fillStyle = '#40404050';
-			drawNodes([this.hoverNode as DrawNode], ctx);
+			context.strokeStyle = '#40404050';
+			context.lineWidth = 5;
+			context.fillStyle = '#40404050';
+			drawNodes([this.hoverNode as DrawNode], context);
 		}
 
-		ctx.beginPath();
-		ctx.font = '10px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
-		ctx.textAlign = 'left';
-		ctx.textBaseline = isPoint ? 'middle' : 'hanging';
-		ctx.lineWidth = 1;
-		ctx.strokeStyle = '#ffffff';
-		ctx.fillStyle = '#000000';
+		context.beginPath();
+		context.font = '10px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+		context.textAlign = 'left';
+		context.textBaseline = isPoint ? 'middle' : 'hanging';
+		context.lineWidth = 1;
+		context.strokeStyle = '#ffffff';
+		context.fillStyle = '#000000';
 
 		for (const node of nodes) {
 			const x = isPoint ? node.x + node.radius + this.pointOffset : node.x + 5;
 			const y = isPoint ? node.y : node.y + 5;
 			if (isPoint) {
-				ctx.strokeText(node.label, x, y);
+				context.strokeText(node.label, x, y);
 			}
 
-			ctx.fillText(node.label, x, y);
+			context.fillText(node.label, x, y);
 		}
 	}
 
 	private paintShadowCanvas() {
-		const ctx = this.shadowCtx;
+		const context = this.shadowCtx;
 
 		const nodes = this.graphData.nodes as DrawNode[];
 		const isPoint = nodes[0]?.shape === 'point';
@@ -407,13 +411,13 @@ export class GraphEngine implements GraphEngineNotifier {
 		for (const node of nodes) {
 			if (isPoint) {
 				const {textWidth, radius, x, y, indexColor} = node;
-				ctx.fillStyle = indexColor;
-				ctx.fillRect(x - radius, y - radius, 2 * radius, 2 * radius);
-				ctx.fillRect(x + radius + this.pointOffset, y - 5, textWidth, 10);
+				context.fillStyle = indexColor;
+				context.fillRect(x - radius, y - radius, 2 * radius, 2 * radius);
+				context.fillRect(x + radius + this.pointOffset, y - 5, textWidth, 10);
 			} else {
 				const {textWidth, textHeight, x, y, indexColor} = node;
-				ctx.fillStyle = indexColor;
-				ctx.fillRect(
+				context.fillStyle = indexColor;
+				context.fillRect(
 					x - (this.nodeLineWidth / 2), y - (this.nodeLineWidth / 2),
 					textWidth + 10 + this.nodeLineWidth, textHeight + 10 + this.nodeLineWidth,
 				);
@@ -491,7 +495,7 @@ export class GraphEngine implements GraphEngineNotifier {
 			: undefined;
 		if (px) {
 			// Find object per pixel color
-			object = this.graphData.lookup(px.data as any) ?? undefined;
+			object = this.graphData.lookup(px.data) ?? undefined;
 		}
 
 		return object;
@@ -522,12 +526,12 @@ export class GraphEngine implements GraphEngineNotifier {
 
 const drawLinks = (
 	links: Iterable<LinkObject>,
-	ctx: CanvasContext,
+	context: CanvasContext,
 	shortcutFilter?: boolean,
 ) => {
 	for (const drawDashed of [true, false]) {
 		if (drawDashed) {
-			ctx.setLineDash(shortcutFilter ? [7, 3] : [3.5, 1.5]);
+			context.setLineDash(shortcutFilter ? [7, 3] : [3.5, 1.5]);
 		}
 
 		for (const link of links) {
@@ -539,31 +543,31 @@ const drawLinks = (
 				continue;
 			}
 
-			ctx.beginPath();
+			context.beginPath();
 
 			if (link.sections) {
-				ctx.moveTo(link.sections[0][0], link.sections[0][1]);
+				context.moveTo(link.sections[0][0], link.sections[0][1]);
 				for (let i = 1; i < link.sections.length; i++) {
-					ctx.lineTo(link.sections[i][0], link.sections[i][1]);
+					context.lineTo(link.sections[i][0], link.sections[i][1]);
 				}
 			} else {
 				const source = link.source;
 				const target = link.target;
-				ctx.moveTo(source.x!, source.y!);
-				ctx.lineTo(target.x!, target.y!);
+				context.moveTo(source.x!, source.y!);
+				context.lineTo(target.x!, target.y!);
 			}
 
-			ctx.stroke();
+			context.stroke();
 		}
 
-		ctx.setLineDash([]);
+		context.setLineDash([]);
 	}
 };
 
 const drawArrows = (
 	links: Iterable<LinkObject>,
 	arrowLength: number,
-	ctx: CanvasContext,
+	context: CanvasContext,
 	filter: ((links: LinkObject) => boolean) | undefined = undefined,
 ) => {
 	for (const link of links) {
@@ -576,8 +580,8 @@ const drawArrows = (
 		let endR: number;
 
 		if (link.sections) {
-			const p1 = link.sections[link.sections.length - 2];
-			const p2 = link.sections[link.sections.length - 1];
+			const p1 = link.sections.at(-2);
+			const p2 = link.sections.at(-1);
 			start = {x: p1[0], y: p1[1]};
 			end = {x: p2[0], y: p2[1]};
 			endR = 0;
@@ -597,7 +601,7 @@ const drawArrows = (
 			y: (start.y * (1 - t)) + (end.y * t),
 		});
 
-		const lineLength = Math.sqrt(((end.x - start.x) ** 2) + ((end.y - start.y) ** 2));
+		const lineLength = Math.hypot(((end.x - start.x)), ((end.y - start.y)));
 		const posAlongLine = lineLength - endR;
 		const arrowHead = getCoordsAlongLine(posAlongLine / lineLength);
 		const arrowTail = getCoordsAlongLine((posAlongLine - arrowLength) / lineLength);
@@ -605,26 +609,26 @@ const drawArrows = (
 		const cos = (arrowHead.y - arrowTail.y) / arrowLength;
 		const sin = -(arrowHead.x - arrowTail.x) / arrowLength;
 
-		ctx.beginPath();
-		ctx.moveTo(arrowHead.x, arrowHead.y);
-		ctx.lineTo(arrowTail.x + (arrowHalfWidth * cos), arrowTail.y + (arrowHalfWidth * sin));
-		ctx.lineTo(arrowTailVertex.x, arrowTailVertex.y);
-		ctx.lineTo(arrowTail.x - (arrowHalfWidth * cos), arrowTail.y - (arrowHalfWidth * sin));
-		ctx.fill();
+		context.beginPath();
+		context.moveTo(arrowHead.x, arrowHead.y);
+		context.lineTo(arrowTail.x + (arrowHalfWidth * cos), arrowTail.y + (arrowHalfWidth * sin));
+		context.lineTo(arrowTailVertex.x, arrowTailVertex.y);
+		context.lineTo(arrowTail.x - (arrowHalfWidth * cos), arrowTail.y - (arrowHalfWidth * sin));
+		context.fill();
 	}
 };
 
-const drawNodes = (nodes: Iterable<DrawNode>, ctx: CanvasContext) => {
-	ctx.beginPath();
+const drawNodes = (nodes: Iterable<DrawNode>, context: CanvasContext) => {
+	context.beginPath();
 	for (const node of nodes) {
 		if (node.shape === 'block') {
-			ctx.rect(node.x, node.y, node.textWidth + 10, node.textHeight + 10);
+			context.rect(node.x, node.y, node.textWidth + 10, node.textHeight + 10);
 		} else {
-			ctx.moveTo(node.x + node.radius, node.y);
-			ctx.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
+			context.moveTo(node.x + node.radius, node.y);
+			context.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
 		}
 	}
 
-	ctx.stroke();
-	ctx.fill();
+	context.stroke();
+	context.fill();
 };

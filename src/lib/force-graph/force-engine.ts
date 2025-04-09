@@ -7,16 +7,18 @@ import {
 	forceCollide as d3ForceCollide,
 } from 'd3-force-3d';
 import type {SparqlGraphData} from './graph-data';
-import type {GraphEngineNotifier, LayoutEngine, NodeObject, Point} from './types';
+import type {
+	GraphEngineNotifier, LayoutEngine, NodeObject, Point,
+} from './types';
 
-const strengthFn = (node: NodeObject) => (node.edgesIn.length > 0 || node.edgesOut.length > 0) ? -50 : 0;
+const strengthFunction = (node: NodeObject) => (node.edgesIn.length > 0 || node.edgesOut.length > 0) ? -50 : 0;
 
 export class ForceEngine implements LayoutEngine {
 	private graphData: SparqlGraphData | undefined;
 
 	private readonly forceLayout = d3ForceSimulation()
 		.force('link', d3ForceLink().distance(50).iterations(1))
-		.force('charge', d3ForceManyBody().strength(strengthFn).distanceMax(200))
+		.force('charge', d3ForceManyBody().strength(strengthFunction).distanceMax(200))
 		.force('center', d3ForceCenter())
 		.force('collide', d3ForceCollide().radius((node: NodeObject) => (node).radius * 1.5).strength(0.5))
 	// .force('link', d3ForceLink().distance(30).iterations(1))
@@ -41,7 +43,7 @@ export class ForceEngine implements LayoutEngine {
 	private cntTicks = 0;
 	private startTickTime = new Date();
 
-	constructor(private readonly notifier: GraphEngineNotifier) {
+	constructor(private notifier: GraphEngineNotifier) {
 		this.forceLayout.alphaDecay(1 - (0.001 ** (1 / 400)));
 		this.forceLayout.velocityDecay(0.1);
 	}

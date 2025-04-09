@@ -77,8 +77,8 @@ export type ShortcutsMode = 'preserve' | 'remove' | 'relax';
 export type SearchObject = {type: 'Link'; object: LinkObject} | {type: 'Node'; object: NodeObject};
 
 export type GraphData = {
-	public nodes: NodeObject[];
-	public shortcutsMode: ShortcutsMode = 'preserve';
+	nodes: NodeObject[];
+	shortcutsMode: ShortcutsMode;
 
 	get forceLinks(): LinkObject[];
 	get viewLinks(): LinkObject[];

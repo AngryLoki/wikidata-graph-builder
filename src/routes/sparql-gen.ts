@@ -22,11 +22,11 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const useGas = (data: QueryParameters) => (data.limit !== 0) || (data.iterations !== 0) || (data.mode === 'undirected');
 
-export type GenSparqlClauseOptions = Record<string, unknown>;
+export type GenerateSparqlClauseOptions = Record<string, unknown>;
 
-const genSparqlClause = (options: QueryParameters, mode = options.mode): string => {
+const generateSparqlClause = (options: QueryParameters, mode = options.mode): string => {
 	if (mode === 'both') {
-		return `{ ${genSparqlClause(options, 'forward')} } UNION { ${genSparqlClause(options, 'reverse')} }`;
+		return `{ ${generateSparqlClause(options, 'forward')} } UNION { ${generateSparqlClause(options, 'reverse')} }`;
 	}
 
 	if (useGas(options)) {
@@ -125,7 +125,7 @@ export const generateQuery = (options: QueryParameters | undefined) => {
         + `\
   SELECT ?item ?itemLabel ?linkTo ?size {
     { SELECT ?item (count(distinct ?element) as ?size) {
-    ${genSparqlClause(options)}
+    ${generateSparqlClause(options)}
     OPTIONAL { ?element wdt:${options.sizeProperty} ?item }
     } GROUP BY ?item }
     OPTIONAL { ?item wdt:${options.property} ?linkTo }
@@ -137,7 +137,7 @@ export const generateQuery = (options: QueryParameters | undefined) => {
 	return out
     + `\
 SELECT ?item ?itemLabel ?linkTo {
-${genSparqlClause(options)}
+${generateSparqlClause(options)}
 OPTIONAL { ?item wdt:${options.property} ?linkTo }
 ${languageService}
 }\

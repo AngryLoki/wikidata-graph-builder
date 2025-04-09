@@ -110,10 +110,10 @@ export class ElkApi {
 		};
 	}
 
-	public async layout(graph: ElkNode, args?: ElkLayoutArguments) {
-		const layoutOptions = args?.layoutOptions ?? {};
-		const logging = args?.logging ?? false;
-		const measureExecutionTime = args?.measureExecutionTime ?? false;
+	public async layout(graph: ElkNode, arguments_?: ElkLayoutArguments) {
+		const layoutOptions = arguments_?.layoutOptions ?? {};
+		const logging = arguments_?.logging ?? false;
+		const measureExecutionTime = arguments_?.measureExecutionTime ?? false;
 
 		if (!this.initialized) {
 			await this.init();
@@ -163,7 +163,7 @@ export class ElkApi {
 		const message = {data: {id, cmd, ...options}};
 
 		return new Promise((resolve, reject) => {
-			this.resolvers[id] = (error: any, result: any) => {
+			this.resolvers[id] = (error: Error | undefined, result: any) => {
 				if (error) {
 					this.convertGwtStyleError(error);
 					reject(error);
@@ -193,7 +193,7 @@ export class ElkApi {
 			// eslint-disable-next-line @typescript-eslint/prefer-optional-chain
 			if (javaException.cause && javaException.cause.backingJsObject) {
 				error.cause = javaException.cause.backingJsObject;
-				this.convertGwtStyleError(error.cause);
+				this.convertGwtStyleError(error.cause as Record<string, any>);
 			}
 
 			delete error.__java$exception;

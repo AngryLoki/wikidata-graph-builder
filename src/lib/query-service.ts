@@ -1,11 +1,11 @@
 import makeChunkedFunction from './utils/make-chunked-function';
 import {browser} from '$app/environment';
 
-type FetchFn = (url: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
+type FetchFunction = (url: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
 
 export type QueryServiceInit = {
 	endpointUrl?: string;
-	fetch?: FetchFn | undefined;
+	fetch?: FetchFunction | undefined;
 };
 
 export type QueryResponseValue = {
@@ -27,9 +27,7 @@ export type QueryResponse = {
 export class QueryService {
 	public static getInstance(init: QueryServiceInit = {}): QueryService {
 		const endpointUrl = init.endpointUrl ?? 'https://query.wikidata.org/sparql';
-		if (!QueryService.instances[endpointUrl]) {
-			QueryService.instances[endpointUrl] = new QueryService(init);
-		}
+		QueryService.instances[endpointUrl] ||= new QueryService(init);
 
 		return QueryService.instances[endpointUrl];
 	}
@@ -39,11 +37,11 @@ export class QueryService {
 	ask = makeChunkedFunction(async (queries: string[]) => this.askMany(queries), 50);
 
 	private readonly endpointUrl: string;
-	private readonly fetch: FetchFn;
+	private readonly fetch: FetchFunction;
 
 	private constructor(init: QueryServiceInit = {}) {
 		this.endpointUrl = init.endpointUrl ?? 'https://query.wikidata.org/sparql';
-		this.fetch = init.fetch ?? (async (...args) => fetch(...args));
+		this.fetch = init.fetch ?? (async (...arguments_) => fetch(...arguments_));
 	}
 
 	async get(query: string, options: RequestInit = {}) {
